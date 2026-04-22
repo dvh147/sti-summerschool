@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site, withBase } from "../site";
+---
+
+<BaseLayout title="Contact">
+  <section class="section">
+    <div class="container-narrow prose">
+      <p class="eyebrow">Contact</p>
+      <h1>Get in touch</h1>
+      <p class="lede">
+        For any questions about submissions, the program, registration, or the venue,
+        please email the organizing committee.
+      </p>
+
+      <p>
+        <a href={`mailto:${site.contactEmail}`} class="btn btn-primary">
+          {site.contactEmail}
+        </a>
+      </p>
+
+      <h2>Press &amp; media</h2>
+      <p>
+        Media enquiries and interview requests can be sent to the same address;
+        please include "Press" in your subject line.
+      </p>
+
+      <h2>On the day</h2>
+      <p>
+        The organizing committee (see <a href={withBase("/committee")}>committee</a>)
+        will be on site at Valrose Castle throughout the three days, 7–9 September 2026.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

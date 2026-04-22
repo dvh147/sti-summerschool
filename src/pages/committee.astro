@@ -1,0 +1,102 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../site";
+
+const members = [
+  { name: "Paul-Emmanuel Anckaert", aff: "SKEMA Business School" },
+  { name: "Sam Arts", aff: "KU Leuven" },
+  { name: "Geert Boedt", aff: "European Patent Office" },
+  { name: "Julie Callaert", aff: "KU Leuven" },
+  { name: "Ludovic Dibiaggio", aff: "SKEMA Business School" },
+  { name: "Dieter Kogler", aff: "UCD Dublin" },
+  { name: "Bart Van Looy", aff: "KU Leuven" },
+  { name: "Dennis Verhoeven", aff: "SKEMA Business School" },
+];
+---
+
+<BaseLayout title="Committee">
+  <section class="section">
+    <div class="container-narrow prose">
+      <p class="eyebrow">Committee</p>
+      <h1>Scientific &amp; organizing committee</h1>
+      <p class="lede">
+        The 2026 edition is organized jointly by researchers from SKEMA Business School,
+        KU Leuven, the European Patent Office, and UCD Dublin.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <ul class="committee-grid">
+        {
+          members.map((m) => (
+            <li class="member card">
+              <div class="avatar" aria-hidden="true">
+                {m.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .slice(0, 2)}
+              </div>
+              <div>
+                <div class="name">{m.name}</div>
+                <div class="aff">{m.aff}</div>
+              </div>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:0;">
+    <div class="container-narrow prose">
+      <h2>Partners</h2>
+      <ul>
+        {site.partners.map((p) => <li>{p.name}</li>)}
+      </ul>
+
+      <h2>Contact</h2>
+      <p>
+        For questions about the program, submissions, or registration:{" "}
+        <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .committee-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+  .member {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+  .avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-serif);
+    font-weight: 600;
+    flex: 0 0 auto;
+  }
+  .name {
+    font-weight: 600;
+  }
+  .aff {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+</style>

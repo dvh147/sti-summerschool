@@ -1,0 +1,138 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase, site } from "../site";
+---
+
+<BaseLayout title="Venue">
+  <section class="section">
+    <div class="container-narrow prose">
+      <p class="eyebrow">Venue</p>
+      <h1>Valrose Castle, Nice</h1>
+      <p class="lede">
+        A 19th-century castle set in a 10-hectare botanical park on the hills above Nice,
+        now part of Université Côte d'Azur's Valrose science campus.
+      </p>
+
+      <figure>
+        <img src={withBase("/images/valrose.jpg")} alt="Valrose Castle surrounded by palm trees" />
+        <figcaption class="help">Château de Valrose, Nice.</figcaption>
+      </figure>
+
+      <h2>Address</h2>
+      <p>
+        {site.venue}<br />
+        {site.venueAddress}
+      </p>
+
+      <p>
+        <a
+          href="https://www.google.com/maps/search/?api=1&query=Ch%C3%A2teau%20de%20Valrose%2028%20Avenue%20Valrose%20Nice"
+          target="_blank"
+          rel="noopener"
+          class="btn btn-outline"
+        >
+          Open in Google Maps
+        </a>
+      </p>
+
+      <div class="map-embed">
+        <iframe
+          title="Map of Valrose Castle, Nice"
+          src="https://www.google.com/maps?q=28+Avenue+Valrose,+Nice,+France&output=embed"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+        ></iframe>
+      </div>
+
+      <h2>Getting to Nice</h2>
+      <h3>By plane</h3>
+      <p>
+        Nice Côte d'Azur Airport (NCE) is the second-busiest airport in France with
+        direct connections from most European hubs. From the airport:
+      </p>
+      <ul>
+        <li>
+          <strong>Tram line 2</strong> runs every ~10 minutes from both airport terminals
+          to the city centre (~25 min, ~€1.70).
+        </li>
+        <li>
+          <strong>Taxi</strong> to Valrose: ~20–30 minutes depending on traffic.
+        </li>
+      </ul>
+
+      <h3>By train</h3>
+      <p>
+        Nice-Ville is the main station, served by TGV from Paris (~6h), Marseille,
+        and direct international trains to Italy. Valrose Castle is a short taxi
+        or tram ride from the station.
+      </p>
+
+      <h3>Getting to Valrose from the city centre</h3>
+      <ul>
+        <li>
+          <strong>Tram line 1</strong> from <em>Jean-Médecin</em> or <em>Gare Thiers</em>,
+          stop <em>Valrose Université</em>, ~10 minutes.
+        </li>
+        <li>
+          <strong>On foot</strong> from Nice-Ville: ~25 minutes, uphill.
+        </li>
+        <li>
+          <strong>Taxi / rideshare</strong> from the city centre: ~10 minutes.
+        </li>
+      </ul>
+
+      <h2>Accommodation</h2>
+      <p>
+        Participants are responsible for their own accommodation. Nice has a wide range
+        of hotels and short-term rentals across every budget tier. A few useful areas:
+      </p>
+      <ul>
+        <li>
+          <strong>Around Gare Thiers / Jean-Médecin</strong> — convenient for tram line
+          1 up to Valrose; mix of mid-range hotels.
+        </li>
+        <li>
+          <strong>Vieux Nice / Old Town</strong> — walking distance to the sea and
+          restaurants; charming but busier.
+        </li>
+        <li>
+          <strong>Cimiez / Valrose area</strong> — quieter residential neighbourhoods
+          close to the venue.
+        </li>
+      </ul>
+      <p class="help">
+        We expect to share a short list of recommended hotels and negotiated rates (if any)
+        closer to the event.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  figure {
+    margin: 1.5rem 0;
+  }
+  figure img {
+    border-radius: var(--radius);
+  }
+  figcaption {
+    margin-top: 0.4rem;
+    text-align: center;
+  }
+  .map-embed {
+    position: relative;
+    width: 100%;
+    padding-top: 60%;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 1px solid var(--color-line);
+    margin: 1rem 0 1.5rem;
+  }
+  .map-embed iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>

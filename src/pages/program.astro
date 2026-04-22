@@ -1,0 +1,141 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../site";
+
+const days = [
+  {
+    date: "Monday, 7 September 2026",
+    subtitle: "Kick-off · early-career afternoon",
+    blocks: [
+      { time: "12:00", title: "Registration & welcome lunch", detail: "" },
+      { time: "13:30", title: "Opening & welcome", detail: "Organizing committee" },
+      { time: "14:00", title: "Early-career sessions & workshops", detail: "Targeted sessions for PhD students and early-career scholars" },
+      { time: "16:00", title: "Guest session: Google", detail: "Presentation on data products for ST&I research" },
+      { time: "17:00", title: "Guest session: European Patent Office", detail: "Presentation on EPO data resources" },
+      { time: "19:00", title: "Welcome reception", detail: "" },
+    ],
+  },
+  {
+    date: "Tuesday, 8 September 2026",
+    subtitle: "Full day of sessions · beach dinner",
+    blocks: [
+      { time: "09:00", title: "Keynote: Ashish Arora", detail: "Fuqua School of Business, Duke University" },
+      { time: "10:30", title: "Paper sessions", detail: "Accepted submissions" },
+      { time: "12:30", title: "Lunch", detail: "" },
+      { time: "14:00", title: "Keynote: Joshua Krieger", detail: "Harvard Business School" },
+      { time: "15:30", title: "Paper sessions", detail: "Accepted submissions" },
+      { time: "17:00", title: "Panel: AI & Innovation in Europe", detail: "Ludovic Dibiaggio (SKEMA), Reinhilde Veugelers (KU Leuven), AI entrepreneurs, regional & EU policymakers" },
+      { time: "19:30", title: "Social dinner on the beach", detail: "Côte d'Azur" },
+    ],
+  },
+  {
+    date: "Wednesday, 9 September 2026",
+    subtitle: "Closing morning",
+    blocks: [
+      { time: "09:00", title: "Keynote: Dashun Wang", detail: "Kellogg School of Management, Northwestern University" },
+      { time: "10:30", title: "Paper sessions", detail: "Accepted submissions" },
+      { time: "12:00", title: "Closing remarks", detail: "End of the summer school" },
+    ],
+  },
+];
+---
+
+<BaseLayout title="Program">
+  <section class="section">
+    <div class="container-narrow prose">
+      <p class="eyebrow">Program</p>
+      <h1>Program</h1>
+      <p class="lede">
+        A provisional outline of the three days. Session titles and exact timings will be
+        confirmed once the paper-review process closes.
+      </p>
+      <p class="help">
+        <em>Indicative schedule — subject to change. Final program posted after {" "}
+        <a href={withBase("/call-for-papers")}>paper acceptances</a> on 22 May 2026.</em>
+      </p>
+    </div>
+  </section>
+
+  <section class="section days">
+    <div class="container-narrow">
+      {
+        days.map((day) => (
+          <article class="day">
+            <header class="day-head">
+              <h2>{day.date}</h2>
+              <p class="day-sub">{day.subtitle}</p>
+            </header>
+            <ol class="blocks">
+              {day.blocks.map((b) => (
+                <li class="block">
+                  <div class="time">{b.time}</div>
+                  <div>
+                    <div class="block-title">{b.title}</div>
+                    {b.detail && <div class="block-detail">{b.detail}</div>}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </article>
+        ))
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .days {
+    padding-top: 0;
+  }
+  .day {
+    margin-bottom: 3rem;
+  }
+  .day-head h2 {
+    margin: 0 0 0.2rem;
+  }
+  .day-sub {
+    color: var(--color-muted);
+    margin: 0 0 1.25rem;
+  }
+  .blocks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 2px solid var(--color-accent-100);
+  }
+  .block {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 1rem;
+    padding: 0.9rem 0 0.9rem 1.25rem;
+    border-bottom: 1px solid var(--color-line);
+    position: relative;
+  }
+  .block::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 1.25rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+  .block:last-child {
+    border-bottom: 0;
+  }
+  .time {
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    color: var(--color-primary-700);
+    padding-top: 2px;
+  }
+  .block-title {
+    font-weight: 600;
+  }
+  .block-detail {
+    color: var(--color-muted);
+    font-size: 0.92rem;
+    margin-top: 0.15rem;
+  }
+</style>

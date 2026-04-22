@@ -1,0 +1,72 @@
+---
+import { site } from "../site";
+
+const items = [
+  { label: "Submission deadline", value: site.deadlines.submission.label, detail: "Abstracts, full papers, session proposals" },
+  { label: "Notification of acceptance", value: site.deadlines.notification.label, detail: "" },
+  { label: "Registration closes", value: site.deadlines.registration.label, detail: "" },
+  { label: "Summer school", value: site.dateRange, detail: "Valrose Castle, Nice" },
+];
+---
+
+<section class="keydates section">
+  <div class="container">
+    <p class="eyebrow">Key dates</p>
+    <h2>Mark your calendar</h2>
+    <ol class="dates-list">
+      {
+        items.map((item) => (
+          <li class="date-item">
+            <div class="date-value">{item.value}</div>
+            <div class="date-label">{item.label}</div>
+            {item.detail && <div class="date-detail">{item.detail}</div>}
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .dates-list {
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    counter-reset: date;
+  }
+  .date-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+    position: relative;
+    counter-increment: date;
+  }
+  .date-item::before {
+    content: counter(date, decimal-leading-zero);
+    position: absolute;
+    top: 0.6rem;
+    right: 0.9rem;
+    font-family: var(--font-serif);
+    font-size: 0.9rem;
+    color: var(--color-accent);
+  }
+  .date-value {
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    color: var(--color-primary-700);
+    margin-bottom: 0.2rem;
+  }
+  .date-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+  .date-detail {
+    font-size: 0.85rem;
+    color: var(--color-muted);
+    margin-top: 0.25rem;
+  }
+</style>

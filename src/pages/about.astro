@@ -1,0 +1,67 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { withBase } from "../site";
+---
+
+<BaseLayout title="About">
+  <section class="section">
+    <div class="container-narrow prose">
+      <p class="eyebrow">About</p>
+      <h1>About the Summer School</h1>
+      <p class="lede">
+        The Summer School on Data and Algorithms for Science, Technology &amp; Innovation
+        Studies is an annual gathering for researchers working with large-scale data on
+        science and innovation.
+      </p>
+
+      <h2>The series</h2>
+      <p>
+        The school started in Leuven as a focused workshop on data and algorithms in
+        science and technology research. Over the past decade it has grown into a small
+        conference with around 80–100 participants — mostly PhD students and early-career
+        researchers from economics, management, and sociology, drawn together by an
+        interest in large-scale data on science and innovation.
+      </p>
+      <p>
+        We typically feature a few keynote lectures alongside sessions from organizations
+        like the European Patent Office and Google on new data products. Past editions have
+        featured speakers including Lee Fleming, Matt Marx, Adam Jaffe, Florenta Teodoridis,
+        Ralf Martin, Dietmar Harhoff, and Ina Ganguli, among many others.
+      </p>
+
+      <h2>The 2026 edition</h2>
+      <p>
+        This year marks the 11th edition. It takes place from 7 to 9 September 2026 in the
+        19th-century Valrose Castle in Nice, hosted by SKEMA Business School in collaboration
+        with KU Leuven, Google, the European Patent Office, Université Côte d'Azur, and
+        UCD Dublin.
+      </p>
+      <p>
+        The program kicks off at noon on 7 September with targeted sessions and workshops
+        for early-career scholars, including guest speakers from Google and the EPO. A full
+        day of sessions on 8 September is followed by a social gathering and dinner on
+        the beach. The school closes at noon on 9 September.
+      </p>
+
+      <h2>Who should attend</h2>
+      <ul>
+        <li>PhD students working with data on science, technology, and innovation</li>
+        <li>Early-career researchers in economics, management, and sociology of innovation</li>
+        <li>Senior scholars and practitioners interested in methodological developments</li>
+        <li>Representatives from organizations that produce or rely on ST&amp;I data</li>
+      </ul>
+      <p>
+        You are welcome to attend whether or not you present. See the
+        <a href={withBase("/call-for-papers")}>Call for Papers</a> for submission
+        details, or head straight to <a href={withBase("/registration")}>registration</a>.
+      </p>
+
+      <h2>Past editions</h2>
+      <ul>
+        <li>2025 — 10th edition, KU Leuven (Kasteel van Arenberg)</li>
+        <li>2024 — 9th edition, University of Antwerp</li>
+        <li>Earlier editions hosted by KU Leuven and partners</li>
+      </ul>
+    </div>
+  </section>
+</BaseLayout>

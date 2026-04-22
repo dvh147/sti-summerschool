@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../site";
+---
+
+<BaseLayout title="Privacy notice">
+  <section class="section">
+    <div class="container-narrow prose">
+      <p class="eyebrow">Privacy</p>
+      <h1>Privacy notice</h1>
+      <p class="lede">
+        This notice explains what personal data we collect when you register for the
+        STI Summer School 2026, why we collect it, and what your rights are.
+      </p>
+
+      <h2>What we collect</h2>
+      <p>
+        Through the registration form we collect the information you provide: name,
+        email, affiliation, role, country, paper details (if submitting), dietary and
+        accessibility needs, and invoice details.
+      </p>
+
+      <h2>Why we collect it</h2>
+      <ul>
+        <li>To register you for the event and communicate with you about it.</li>
+        <li>To plan catering, seating, and accommodations.</li>
+        <li>To invoice you and process payment of the registration fee.</li>
+        <li>To evaluate submitted abstracts and papers.</li>
+      </ul>
+      <p>
+        The legal basis is your consent (Art. 6(1)(a) GDPR) and the performance of
+        your registration (Art. 6(1)(b) GDPR).
+      </p>
+
+      <h2>Who sees it</h2>
+      <p>
+        Your registration data is accessible to members of the organizing committee
+        (see <a href="./committee">committee</a>) and is processed on their behalf by:
+      </p>
+      <ul>
+        <li><strong>Formspree</strong> — the form-handling service that receives submissions from this site.</li>
+        <li><strong>SKEMA Business School</strong> — for invoicing and payment processing.</li>
+      </ul>
+      <p>We do not share your data with third parties for any other purpose.</p>
+
+      <h2>How long we keep it</h2>
+      <p>
+        We keep registration data for the duration of the event plus a reasonable
+        period thereafter (typically up to 12 months) for reporting, follow-up, and
+        accounting. Financial records may be kept longer where required by law.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        You have the right to access, correct, or delete your data, and to withdraw
+        your consent at any time. To exercise these rights, email
+        <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
+      </p>
+
+      <p class="help">
+        This is a short notice aimed at registrants. A fuller data-protection notice
+        will be provided where required by the participating institutions.
+      </p>
+    </div>
+  </section>
+</BaseLayout>

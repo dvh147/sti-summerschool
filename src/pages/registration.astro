@@ -1,0 +1,243 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site, withBase } from "../site";
+
+const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || site.formspreeId;
+const formAction = `https://formspree.io/f/${formspreeId}`;
+---
+
+<BaseLayout title="Registration">
+  <section class="section">
+    <div class="container-narrow prose">
+      <p class="eyebrow">Registration</p>
+      <h1>Register for STI 2026</h1>
+      <p class="lede">
+        Whether you are presenting a paper or joining as a participant, please fill in
+        the registration form below. Payment instructions follow by email.
+      </p>
+
+      <div class="fee-box">
+        <div>
+          <div class="fee-amount">{site.fee}</div>
+          <div class="fee-label">per participant</div>
+        </div>
+        <ul class="fee-includes">
+          <li>All presentations and keynotes</li>
+          <li>Lunches and refreshments on all three days</li>
+          <li>Welcome reception and beach dinner on 8 September</li>
+          <li>Materials and program</li>
+        </ul>
+      </div>
+
+      <p class="help">
+        Travel and accommodation are not included — see the
+        <a href={withBase("/venue")}>Venue page</a> for guidance.
+      </p>
+
+      <p>
+        <strong>Registration deadline:</strong> {site.deadlines.registration.label}.
+      </p>
+    </div>
+  </section>
+
+  <section class="section form-section">
+    <div class="container-narrow">
+      <h2>Registration form</h2>
+      <p class="help">
+        Fields marked <span class="required">*</span> are required. Your details will only
+        be used to process your registration — see our <a href={withBase("/privacy")}>privacy notice</a>.
+      </p>
+
+      <form action={formAction} method="POST" class="reg-form" novalidate>
+        <input type="hidden" name="_subject" value="STI 2026 — New registration" />
+        <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="gotcha" />
+
+        <div class="form-grid">
+          <div>
+            <label for="firstName">First name <span class="required">*</span></label>
+            <input id="firstName" name="firstName" type="text" autocomplete="given-name" required />
+          </div>
+          <div>
+            <label for="lastName">Last name <span class="required">*</span></label>
+            <input id="lastName" name="lastName" type="text" autocomplete="family-name" required />
+          </div>
+
+          <div class="full">
+            <label for="email">Email <span class="required">*</span></label>
+            <input id="email" name="email" type="email" autocomplete="email" required />
+          </div>
+
+          <div>
+            <label for="affiliation">Affiliation <span class="required">*</span></label>
+            <input id="affiliation" name="affiliation" type="text" autocomplete="organization" required />
+          </div>
+          <div>
+            <label for="position">Position / role</label>
+            <input id="position" name="position" type="text" placeholder="e.g. PhD student, Assistant Professor" />
+          </div>
+
+          <div class="full">
+            <label for="country">Country</label>
+            <input id="country" name="country" type="text" autocomplete="country-name" />
+          </div>
+
+          <div class="full">
+            <label>Are you submitting a paper? <span class="required">*</span></label>
+            <div class="radio-row">
+              <label class="checkbox"><input type="radio" name="presenting" value="yes" required /> Yes, I plan to present</label>
+              <label class="checkbox"><input type="radio" name="presenting" value="no" required /> No, attending only</label>
+            </div>
+            <p class="help">
+              If yes, please also submit your abstract or paper to
+              <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>
+              by {site.deadlines.submission.label}.
+            </p>
+          </div>
+
+          <div class="full">
+            <label for="paperTitle">Paper / abstract title (if presenting)</label>
+            <input id="paperTitle" name="paperTitle" type="text" />
+          </div>
+
+          <div class="full">
+            <label for="dietary">Dietary requirements</label>
+            <input id="dietary" name="dietary" type="text" placeholder="e.g. vegetarian, gluten-free, allergies" />
+          </div>
+
+          <div class="full">
+            <label for="accessibility">Accessibility needs</label>
+            <input id="accessibility" name="accessibility" type="text" placeholder="Tell us how we can make the event accessible for you" />
+          </div>
+
+          <div class="full">
+            <label for="invoiceDetails">Invoice details</label>
+            <textarea id="invoiceDetails" name="invoiceDetails" placeholder="Billing name, address, VAT number (if required)"></textarea>
+          </div>
+
+          <div class="full">
+            <label for="notes">Anything else we should know?</label>
+            <textarea id="notes" name="notes"></textarea>
+          </div>
+
+          <div class="full checkbox">
+            <input id="consent" name="consent" type="checkbox" required />
+            <label for="consent">
+              I consent to the organizers processing the information above for the
+              purpose of registering me for the STI Summer School 2026, as described
+              in the <a href={withBase("/privacy")}>privacy notice</a>. <span class="required">*</span>
+            </label>
+          </div>
+        </div>
+
+        <p class="submit-row">
+          <button type="submit" class="btn btn-primary">Submit registration</button>
+        </p>
+
+        {formspreeId === "your-form-id-here" && (
+          <p class="help warn">
+            <strong>Form not yet connected.</strong> This form is wired to submit to
+            Formspree — a real form ID will be added before the site goes public.
+          </p>
+        )}
+      </form>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container-narrow">
+      <h2>Payment</h2>
+      <div class="callout">
+        <p style="margin-top:0;">
+          <strong>Payment is handled separately</strong> from this form. After you submit
+          your registration, you will receive payment instructions by email.
+        </p>
+        <p>
+          Participant fees are collected by SKEMA Business School. Payment will be possible via:
+        </p>
+        <ul>
+          <li>
+            <strong>SEPA bank transfer</strong> to the SKEMA account provided in your
+            confirmation email. Please use the reference
+            <code>STI2026-&lt;your last name&gt;</code>.
+          </li>
+          <li>
+            <em>(Optional, to be confirmed)</em> a dedicated payment link on a secure
+            platform for card payments.
+          </li>
+        </ul>
+        <p style="margin-bottom:0;" class="help">
+          <strong>Placeholder:</strong> the final IBAN, BIC and any payment-link URL
+          will appear here before the registration deadline of {site.deadlines.registration.label}.
+        </p>
+      </div>
+
+      <p>
+        For questions about registration or payment, email
+        <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .fee-box {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+  }
+  .fee-amount {
+    font-family: var(--font-serif);
+    font-size: 2.4rem;
+    color: var(--color-primary-700);
+    line-height: 1;
+  }
+  .fee-label {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+  .fee-includes {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--color-ink);
+  }
+  .fee-includes li {
+    margin-bottom: 0.2rem;
+  }
+
+  .form-section {
+    padding-top: 0;
+  }
+  .reg-form {
+    margin-top: 1.25rem;
+  }
+  .radio-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .submit-row {
+    margin-top: 1.5rem;
+  }
+  .gotcha {
+    display: none !important;
+  }
+  .warn {
+    background: #fff6e5;
+    border: 1px solid #f3d79a;
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--radius-sm);
+    color: #7a5200;
+  }
+  code {
+    background: rgba(10, 74, 122, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+</style>

@@ -1,0 +1,142 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const keynotes = [
+  {
+    name: "Ashish Arora",
+    affiliation: "Fuqua School of Business, Duke University",
+    bio: "Research on the economics of technology, innovation, and the commercialization of knowledge.",
+  },
+  {
+    name: "Joshua Krieger",
+    affiliation: "Harvard Business School",
+    bio: "Studies the economics and management of innovation, with a focus on the pharmaceutical and biotech industries.",
+  },
+  {
+    name: "Dashun Wang",
+    affiliation: "Kellogg School of Management, Northwestern University",
+    bio: "Director of the Center for Science of Science and Innovation; work on the quantitative study of scientific careers and breakthroughs.",
+  },
+];
+
+const additional = [
+  { name: "Google", note: "Guest speaker on data products for ST&I research" },
+  { name: "European Patent Office", note: "Guest speaker on EPO data resources" },
+  { name: "Ludovic Dibiaggio", note: "SKEMA — AI & Innovation panel" },
+  { name: "Reinhilde Veugelers", note: "KU Leuven — AI & Innovation panel" },
+  { name: "AI entrepreneurs & policymakers", note: "Panel on AI and Innovation in Europe" },
+];
+---
+
+<BaseLayout title="Speakers">
+  <section class="section">
+    <div class="container-narrow prose">
+      <p class="eyebrow">Speakers</p>
+      <h1>Speakers &amp; panelists</h1>
+      <p class="lede">
+        Three confirmed keynote lectures, joined by guest sessions from Google and the
+        European Patent Office and an interactive panel on AI and Innovation in Europe.
+      </p>
+    </div>
+  </section>
+
+  <section class="section speakers-section">
+    <div class="container">
+      <p class="eyebrow">Keynotes</p>
+      <h2>Confirmed keynotes</h2>
+      <div class="card-grid">
+        {
+          keynotes.map((s) => (
+            <article class="speaker-card card">
+              <div class="avatar" aria-hidden="true">
+                {s.name
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")}
+              </div>
+              <h3>{s.name}</h3>
+              <p class="affiliation">{s.affiliation}</p>
+              <p class="bio">{s.bio}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Also featuring</p>
+      <h2>Guest sessions &amp; panel</h2>
+      <ul class="additional">
+        {
+          additional.map((a) => (
+            <li>
+              <strong>{a.name}</strong>
+              <span>{a.note}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="help">
+        Named panelists and session details will be added as invitations are confirmed.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .speakers-section {
+    padding-top: 0;
+  }
+  .speaker-card {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    color: #fff;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+  .speaker-card h3 {
+    margin: 0;
+  }
+  .affiliation {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    margin: 0.1rem 0 0.5rem;
+  }
+  .bio {
+    font-size: 0.95rem;
+    margin: 0;
+  }
+  .additional {
+    list-style: none;
+    margin: 1rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .additional li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.75rem;
+    padding: 0.6rem 0.9rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+  }
+  .additional span {
+    color: var(--color-muted);
+  }
+</style>

@@ -1,0 +1,94 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site, withBase } from "../site";
+---
+
+<BaseLayout title="Call for Papers">
+  <section class="section">
+    <div class="container-narrow prose">
+      <p class="eyebrow">Call for Papers</p>
+      <h1>Call for Papers &amp; Participation</h1>
+      <p class="lede">
+        11th Summer School on Data and Algorithms for Science, Technology &amp; Innovation Studies.
+        {site.dateRange} · Valrose Castle, Nice.
+      </p>
+
+      <p>
+        <a href={withBase("/docs/STI-2026-Call-for-Papers.pdf")} class="btn btn-primary" download>
+          Download the Call for Papers (PDF)
+        </a>
+      </p>
+
+      <div class="callout">
+        <p style="margin:0;">
+          <strong>Submit by {site.deadlines.submission.label}</strong> — abstracts, full papers,
+          or session proposals to <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
+          Notification of acceptance: {site.deadlines.notification.label}.
+        </p>
+      </div>
+
+      <h2>Overview</h2>
+      <p>
+        KU Leuven, in collaboration with Google, the European Patent Office, SKEMA Business School,
+        Université Côte d'Azur, and UCD Dublin, is excited to invite you to the 11th Annual Summer
+        School on Data and Algorithms for Science, Technology &amp; Innovation (ST&amp;I) Studies.
+        This year's edition will take place in the 19th-century Valrose Castle in Nice. It's the
+        perfect place for both junior and senior researchers in ST&amp;I studies to convene and
+        reflect upon the past, the present, and the future of our exciting discipline.
+      </p>
+
+      <h2>Event highlights</h2>
+      <p>
+        Confirmed keynote speakers are Ashish Arora (Fuqua School of Business, Duke University),
+        Joshua Krieger (Harvard Business School), and Dashun Wang (Kellogg School of Management,
+        Northwestern University). As per our tradition, the first afternoon will feature targeted
+        sessions and workshops for early-career scholars. This includes guest speakers from Google
+        and the European Patent Office. In addition, Ludovic Dibiaggio (SKEMA) and Reinhilde
+        Veugelers (KU Leuven) will take part in an interactive panel on AI and Innovation in Europe,
+        featuring AI entrepreneurs and regional and EU policymakers.
+      </p>
+
+      <h2>Schedule</h2>
+      <p>
+        Kick-off at noon on 7 September and ending at noon on 9 September. A full day of sessions
+        on 8 September is followed by a social gathering and dinner on the beach, set against the
+        stunning scenery of the Côte d'Azur.
+      </p>
+
+      <h2>Call for submissions and participation</h2>
+      <p>
+        We welcome your latest research in the development and use of data and algorithms in ST&amp;I,
+        including machine learning, natural language processing, and AI. We welcome submissions of
+        abstracts, full papers, or proposals for a dedicated session on a specific theme. Please
+        submit via email to <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a> by
+        {site.deadlines.submission.label}. Notification of acceptance will be communicated by
+        {site.deadlines.notification.label}. Everyone is also warmly invited to participate without
+        presenting.
+      </p>
+
+      <h2>Registration fee</h2>
+      <p>
+        {site.fee} — covering all presentations, lunches, refreshments, and the social event and
+        dinner. Participants are responsible for their travel and accommodation arrangements.
+        The deadline for registration is {site.deadlines.registration.label}.
+      </p>
+
+      <h2>Scientific and organizing committee</h2>
+      <ul>
+        <li>Paul-Emmanuel Anckaert — SKEMA Business School</li>
+        <li>Sam Arts — KU Leuven</li>
+        <li>Geert Boedt — European Patent Office</li>
+        <li>Julie Callaert — KU Leuven</li>
+        <li>Ludovic Dibiaggio — SKEMA Business School</li>
+        <li>Dieter Kogler — UCD Dublin</li>
+        <li>Bart Van Looy — KU Leuven</li>
+        <li>Dennis Verhoeven — SKEMA Business School</li>
+      </ul>
+
+      <p>
+        <a href={withBase("/registration")} class="btn btn-primary">Register</a>
+        <a href={withBase("/venue")} class="btn btn-outline">Venue &amp; travel</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

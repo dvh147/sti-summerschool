@@ -1,0 +1,91 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Hero from "../components/Hero.astro";
+import KeyDates from "../components/KeyDates.astro";
+import Partners from "../components/Partners.astro";
+import { withBase } from "../site";
+---
+
+<BaseLayout title="Home">
+  <Hero />
+
+  <section class="section intro">
+    <div class="container-narrow">
+      <p class="eyebrow">About the school</p>
+      <h2>Three days. Eighty scholars. One Mediterranean castle.</h2>
+      <p class="lede">
+        The Summer School on Data and Algorithms for Science, Technology &amp; Innovation Studies
+        is an annual gathering for researchers working with large-scale data on science and innovation.
+        Founded at KU Leuven, now in its 11th edition, it brings together PhD students, early-career
+        researchers, and leading scholars from economics, management, and sociology.
+      </p>
+      <p>
+        The 2026 edition takes place at the 19th-century Valrose Castle in Nice, hosted
+        by SKEMA Business School in collaboration with KU Leuven, Google, the European Patent Office,
+        Université Côte d'Azur, and UCD Dublin.
+      </p>
+      <p>
+        <a href={withBase("/about")} class="btn btn-outline">Read more about the school</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="section highlights">
+    <div class="container">
+      <p class="eyebrow">2026 highlights</p>
+      <h2>What to expect</h2>
+      <div class="card-grid">
+        <article class="card">
+          <h3>Three keynote lectures</h3>
+          <p>
+            Ashish Arora (Duke / Fuqua), Joshua Krieger (Harvard Business School),
+            and Dashun Wang (Kellogg / Northwestern).
+          </p>
+          <p><a href={withBase("/speakers")}>See speakers →</a></p>
+        </article>
+        <article class="card">
+          <h3>Early-career sessions</h3>
+          <p>
+            The first afternoon features targeted sessions and hands-on workshops
+            for early-career scholars, with guest speakers from Google and the EPO.
+          </p>
+          <p><a href={withBase("/program")}>See program →</a></p>
+        </article>
+        <article class="card">
+          <h3>AI &amp; Innovation panel</h3>
+          <p>
+            An interactive panel with Ludovic Dibiaggio (SKEMA), Reinhilde Veugelers (KU Leuven),
+            AI entrepreneurs, and regional and EU policymakers.
+          </p>
+        </article>
+        <article class="card">
+          <h3>Dinner on the beach</h3>
+          <p>
+            Social gathering and dinner on the beach on the evening of 8 September,
+            set against the Côte d'Azur.
+          </p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <KeyDates />
+
+  <section class="section submit-cta">
+    <div class="container-narrow">
+      <div class="callout">
+        <h3 style="margin-top:0;">Submit your paper by 8 May 2026</h3>
+        <p>
+          We welcome abstracts, full papers, or proposals for a dedicated session on
+          the development and use of data and algorithms in ST&amp;I, including
+          machine learning, natural language processing, and AI.
+        </p>
+        <p style="margin-bottom:0;">
+          <a href={withBase("/call-for-papers")} class="btn btn-primary">Read the Call for Papers</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Partners />
+</BaseLayout>

@@ -1,0 +1,99 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div>
+      <h3 class="foot-title">STI Summer School 2026</h3>
+      <p class="muted">7–9 September 2026 · Valrose Castle, Nice</p>
+      <p class="muted">
+        Questions? <a href="mailto:sti@kuleuven.be">sti@kuleuven.be</a>
+      </p>
+    </div>
+
+    <nav aria-label="Footer">
+      <ul class="foot-links">
+        <li><a href={`${base}/`}>Home</a></li>
+        <li><a href={`${base}/about`}>About</a></li>
+        <li><a href={`${base}/call-for-papers`}>Call for Papers</a></li>
+        <li><a href={`${base}/program`}>Program</a></li>
+        <li><a href={`${base}/speakers`}>Speakers</a></li>
+        <li><a href={`${base}/registration`}>Registration</a></li>
+        <li><a href={`${base}/venue`}>Venue</a></li>
+        <li><a href={`${base}/committee`}>Committee</a></li>
+        <li><a href={`${base}/contact`}>Contact</a></li>
+        <li><a href={`${base}/privacy`}>Privacy</a></li>
+      </ul>
+    </nav>
+
+    <div class="partners">
+      <h3 class="foot-title">Organized in collaboration with</h3>
+      <p class="muted">
+        KU Leuven · Google · European Patent Office · SKEMA Business School · Université Côte d'Azur · UCD Dublin
+      </p>
+    </div>
+  </div>
+
+  <div class="container foot-base">
+    <small>© {year} STI Summer School organizing committee. All rights reserved.</small>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: 5rem;
+    background: #0c1a26;
+    color: #cbd5dd;
+    padding-top: 3rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .site-footer a {
+    color: #eaf3f9;
+  }
+
+  .footer-inner {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .foot-title {
+    font-family: var(--font-serif);
+    font-size: 1.05rem;
+    color: #fff;
+    margin: 0 0 0.5rem;
+  }
+
+  .muted {
+    color: #96a7b4;
+    font-size: 0.9rem;
+    max-width: 40ch;
+  }
+
+  .foot-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.25rem 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .foot-links a {
+    font-size: 0.9rem;
+    text-decoration: none;
+  }
+  .foot-links a:hover {
+    text-decoration: underline;
+  }
+
+  .foot-base {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    color: #96a7b4;
+    font-size: 0.82rem;
+  }
+</style>
