@@ -56,16 +56,22 @@ details (SKEMA account). Replace the text in
 
 ## Deployment
 
-A GitHub Actions workflow (`.github/workflows/deploy.yml`) builds and deploys
-the site to GitHub Pages on every push to `main` (and the feature branch
-`claude/sti-summerschool-website-Kh7q3` for previews).
+Two repos, one live site:
 
-### Prerequisite: the site repo must be public
+| Repo | Purpose | Pages enabled? |
+|---|---|---|
+| `dvh147/sti26` (private, this one) | Organizing materials under `/2026/` + website source | no |
+| `dvh147/sti-summerschool` (public) | Mirror of the website source only | yes |
 
-GitHub Pages is free only on public repos. Because `dvh147/sti26` is private
-and contains internal organizing materials under `/2026/`, the site is
-intended to live in a **separate public repo**. See "Splitting into a public
-repo" below.
+The site is published from the public repo. A GitHub Action
+(`.github/workflows/sync-public.yml`) watches the private repo; whenever a
+commit lands on `main` or the feature branch, it copies the website files
+(everything except `/2026/`) into the public repo. The deploy workflow in
+the public repo then publishes to GitHub Pages automatically.
+
+**One-time setup to enable automatic sync:** see "Enabling automatic sync"
+below. Until the secret is in place, use the manual PowerShell flow (next
+section).
 
 ### First-time setup (in the public site repo)
 
@@ -103,6 +109,39 @@ After the first push:
 - **Settings → Actions → Variables → `BASE_PATH = /<new-repo>`** (skip if the
   repo name is `sti26`)
 - Optionally also set `PUBLIC_FORMSPREE_ID` once you have a Formspree form.
+
+### Enabling automatic sync (one-time)
+
+1. **Create a fine-grained Personal Access Token**
+   - GitHub → Profile picture → Settings → Developer settings →
+     Personal access tokens → **Fine-grained tokens** → **Generate new token**
+   - Name: `sti26 sync to public`
+   - Expiration: 1 year (or your preference)
+   - Repository access: **Only select repositories** → `dvh147/sti-summerschool`
+   - Permissions → Repository permissions:
+     - Contents: **Read and write**
+     - Metadata: **Read-only** (auto-selected)
+   - Generate, copy the `github_pat_...` token.
+
+2. **Add it as a secret in the private repo**
+   - `dvh147/sti26` → Settings → Secrets and variables → Actions → **New repository secret**
+   - Name: `PUBLIC_REPO_TOKEN`
+   - Value: paste the token.
+
+3. **Trigger the first run**
+   - Push any commit to the feature branch (or `main`), or go to Actions →
+     "Sync to public site repo" → Run workflow.
+   - You should see a commit land in `dvh147/sti-summerschool` attributed
+     to `sti26-sync-bot`, followed by a deploy.
+
+After that, every push from me (or you) to the private repo updates the
+live site within a couple of minutes — no local terminal work needed.
+
+### Manual sync (fallback)
+
+If the automatic sync isn't set up yet or you want to run it locally, use
+`scripts/sync-to-public.ps1` (PowerShell) or `scripts/export-public.sh`
+(Bash). See comments in those files.
 
 ### Custom domain
 

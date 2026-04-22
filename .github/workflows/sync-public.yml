@@ -1,0 +1,67 @@
+name: Sync to public site repo
+
+# Every push to the feature branch (or main) copies the website source
+# into dvh147/sti-summerschool, where the deploy workflow picks it up
+# and publishes to GitHub Pages. The private /2026/ directory is excluded.
+#
+# Requires a repo secret PUBLIC_REPO_TOKEN — a fine-grained PAT with
+# "Contents: Read and write" on dvh147/sti-summerschool.
+
+on:
+  push:
+    branches:
+      - main
+      - claude/sti-summerschool-website-Kh7q3
+  workflow_dispatch:
+
+concurrency:
+  group: "sync-public"
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    # Only meaningful when running from the private repo.
+    if: github.repository == 'dvh147/sti26'
+    runs-on: ubuntu-latest
+    env:
+      PUBLIC_REPO: dvh147/sti-summerschool
+      PUBLIC_BRANCH: main
+    steps:
+      - name: Check out private repo
+        uses: actions/checkout@v4
+        with:
+          path: private
+
+      - name: Check out public repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.PUBLIC_REPO }}
+          ref: ${{ env.PUBLIC_BRANCH }}
+          token: ${{ secrets.PUBLIC_REPO_TOKEN }}
+          path: public
+
+      - name: Copy website source (excluding private materials)
+        run: |
+          rsync -a --delete \
+            --exclude='.git/' \
+            --exclude='2026/' \
+            --exclude='node_modules/' \
+            --exclude='dist/' \
+            --exclude='.astro/' \
+            --exclude='.env' \
+            --exclude='.env.local' \
+            private/ public/
+
+      - name: Commit and push (if anything changed)
+        working-directory: public
+        run: |
+          git config user.name "sti26-sync-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to sync."
+            exit 0
+          fi
+          SHORT_SHA="${GITHUB_SHA:0:7}"
+          git commit -m "Sync from dvh147/sti26@${SHORT_SHA}"
+          git push

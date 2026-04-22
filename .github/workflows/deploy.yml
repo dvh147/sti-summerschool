@@ -18,6 +18,10 @@ concurrency:
 
 jobs:
   build:
+    # Only run in the public site repo. The private repo has no Pages and
+    # uses sync-public.yml to push changes to the public repo, which then
+    # triggers this workflow there.
+    if: github.repository != 'dvh147/sti26'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -33,7 +37,7 @@ jobs:
         env:
           # Change these when a custom domain is configured.
           SITE_URL: ${{ vars.SITE_URL || 'https://dvh147.github.io' }}
-          BASE_PATH: ${{ vars.BASE_PATH || '/sti26' }}
+          BASE_PATH: ${{ vars.BASE_PATH || '/sti-summerschool' }}
           PUBLIC_FORMSPREE_ID: ${{ vars.PUBLIC_FORMSPREE_ID || secrets.PUBLIC_FORMSPREE_ID || 'your-form-id-here' }}
         run: npm run build
 
@@ -42,6 +46,7 @@ jobs:
           path: ./dist
 
   deploy:
+    if: github.repository != 'dvh147/sti26'
     needs: build
     runs-on: ubuntu-latest
     environment:
