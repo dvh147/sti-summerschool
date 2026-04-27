@@ -17,9 +17,15 @@ Verhoeven (SKEMA).
 
 ## Current live state
 
-- Live preview: https://dvh147.github.io/sti-summerschool/
+- Live site: https://stisummerschool.org (custom apex domain on GitHub Pages,
+  registered via Cloudflare Registrar). Old preview URL
+  https://dvh147.github.io/sti-summerschool/ may still resolve during the
+  transition but is no longer canonical.
 - 10 pages published: Home, About, Call for Papers, Program, Speakers,
   Registration, Venue, Committee, Contact, Privacy.
+- Registration backend: Cloudflare Worker at
+  https://sti26-registration.sti2026.workers.dev with D1 storage and a
+  token-gated /admin dashboard (delete supported).
 - Auto-deploy pipeline working end-to-end (see "How updates flow" below).
 
 ## Where everything lives
@@ -67,9 +73,11 @@ No local PowerShell work needed for the user in normal operation.
 
 - **Stack:** Astro + Markdown/MDX, plain CSS with design tokens. No Tailwind.
 - **Hosting:** GitHub Pages on the public repo.
-- **Form backend:** Formspree (EU region preferred for GDPR). Form ID set via
-  `PUBLIC_FORMSPREE_ID` env var / repo variable; currently placeholder
-  `your-form-id-here` — form renders a "not yet connected" warning.
+- **Form backend:** self-hosted Cloudflare Worker (`worker/`) with D1
+  storage, server-side Turnstile captcha, optional Resend email, and a
+  token-gated `/admin` dashboard. Replaced the original Formspree wiring.
+  Public site reads `PUBLIC_REGISTRATION_API` and `PUBLIC_TURNSTILE_SITE_KEY`
+  as repo variables on `dvh147/sti-summerschool`.
 - **Language:** English only.
 - **Visual:** clean academic with Mediterranean/Côte d'Azur palette (primary
   `#0a4a7a`, accent `#2fa4c4`, sand bg `#f6f1e7`). Serif = Fraunces,
@@ -86,14 +94,12 @@ No local PowerShell work needed for the user in normal operation.
 
 - [ ] **SKEMA bank details** — IBAN, BIC, account holder name, any payment-link URL.
       Location to update: `src/pages/registration.astro` (payment callout block).
-- [ ] **Formspree form ID** — user to create Formspree form (EU region) and
-      set `PUBLIC_FORMSPREE_ID` repo variable on `dvh147/sti-summerschool`,
-      or edit `src/site.ts` `formspreeId`.
+- [ ] **Resend email** (optional). Worker is wired but skips silently
+      without `RESEND_API_KEY` + `FROM_EMAIL` secrets. Easiest after the
+      domain DNS propagates and we can verify `noreply@stisummerschool.org`
+      in Resend.
 - [ ] **Partner logos** — currently text chips. User can drop PNG/SVG into
       `public/images/logos/` and I'd wire them into `src/components/Partners.astro`.
-- [ ] **Custom domain** — user to buy (candidates discussed: `sti2026.org`,
-      `sti-nice2026.org`, etc.). On purchase: add `CNAME` to public repo,
-      set `SITE_URL` repo variable, clear `BASE_PATH` variable.
 - [ ] **Program page real schedule** — after 22 May 2026 acceptances. The
       previous detailed schedule is in git history (commit `1e27f0a^`) if
       we want to restore the layout and fill in real sessions.
@@ -110,10 +116,15 @@ No local PowerShell work needed for the user in normal operation.
 - **Do not add `.github/workflows/sync-public.yml` to the public repo.** The
   `if: github.repository == 'dvh147/sti26'` guard prevents it from running
   if it ever ends up there, but it shouldn't be there in the first place.
-- **Formspree placeholder behaviour.** The Registration form is wired to
-  `https://formspree.io/f/your-form-id-here` by default and shows a visible
-  yellow warning. This is intentional — do not hide the warning, it protects
-  us from the user deploying a dead form.
+- **Worker CORS allowlist.** `worker/wrangler.toml` `ALLOWED_ORIGINS` must
+  list every origin that can POST the form (apex `stisummerschool.org`,
+  `www`, `dvh147.github.io` during transition, `localhost:4321` for dev).
+  After editing, redeploy the worker with `cd worker && npm run deploy`.
+- **Repo variables on the public repo.** Build needs `SITE_URL`,
+  `PUBLIC_REGISTRATION_API`, `PUBLIC_TURNSTILE_SITE_KEY` set on
+  `dvh147/sti-summerschool` Variables tab (not Secrets). `BASE_PATH` should
+  be unset for the apex domain; only set it if a future deploy serves
+  from a subpath.
 - **GDPR.** Registration collects personal data in the EU. The `/privacy`
   page exists; keep it truthful if the form's backend or processors change.
 - **Dropbox pathing.** User's local clone is under `C:\Users\dennis.verhoeven\Dropbox (Personal)\...`.
@@ -134,6 +145,11 @@ No local PowerShell work needed for the user in normal operation.
 
 - **2026-04-22** — Initial scaffold, 10 pages, sync pipeline, CLAUDE.md added.
   Program page moved to TBA state per user request.
+- **2026-04-27** — Replaced Formspree with self-hosted Cloudflare Worker
+  + D1 + Turnstile. Admin dashboard with status updates, CSV export, and
+  per-row delete. Domain `stisummerschool.org` purchased (Cloudflare
+  Registrar) and wired up: CNAME committed, default `SITE_URL` switched
+  to apex, `BASE_PATH` cleared, worker `ALLOWED_ORIGINS` updated.
 
 ## Pointers for future sessions
 

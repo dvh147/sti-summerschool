@@ -35,9 +35,11 @@ jobs:
 
       - name: Build site
         env:
-          # Change these when a custom domain is configured.
-          SITE_URL: ${{ vars.SITE_URL || 'https://dvh147.github.io' }}
-          BASE_PATH: ${{ vars.BASE_PATH || '/sti-summerschool' }}
+          # SITE_URL defaults to the apex custom domain. BASE_PATH is empty
+          # for the apex domain; set it on the public repo only if the site
+          # is ever served from a subpath (e.g. /<repo>/).
+          SITE_URL: ${{ vars.SITE_URL || 'https://stisummerschool.org' }}
+          BASE_PATH: ${{ vars.BASE_PATH }}
           PUBLIC_REGISTRATION_API: ${{ vars.PUBLIC_REGISTRATION_API || 'https://your-worker.example.workers.dev' }}
           PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY || '' }}
         run: npm run build
