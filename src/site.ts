@@ -26,7 +26,13 @@ export const site = {
     { name: "Université Côte d'Azur" },
     { name: "UCD Dublin" },
   ],
-  formspreeId: "your-form-id-here", // overridden at build time via PUBLIC_FORMSPREE_ID
+  // Cloudflare Worker URL that handles registration submissions and the
+  // admin dashboard. Override at build time via PUBLIC_REGISTRATION_API.
+  // Until set, the form shows a visible "not yet connected" warning.
+  registrationApi: "https://your-worker.example.workers.dev",
+  // Cloudflare Turnstile public site key for the registration form.
+  // Override at build time via PUBLIC_TURNSTILE_SITE_KEY.
+  turnstileSiteKey: "",
 };
 
 export function withBase(path: string): string {

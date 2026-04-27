@@ -45,6 +45,7 @@ jobs:
           rsync -a --delete \
             --exclude='.git/' \
             --exclude='2026/' \
+            --exclude='worker/' \
             --exclude='node_modules/' \
             --exclude='dist/' \
             --exclude='.astro/' \

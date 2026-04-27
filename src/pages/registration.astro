@@ -2,8 +2,10 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { site, withBase } from "../site";
 
-const formspreeId = import.meta.env.PUBLIC_FORMSPREE_ID || site.formspreeId;
-const formAction = `https://formspree.io/f/${formspreeId}`;
+const apiBase = import.meta.env.PUBLIC_REGISTRATION_API || site.registrationApi;
+const apiUrl = `${apiBase.replace(/\/$/, "")}/api/register`;
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || site.turnstileSiteKey;
+const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey.length > 0;
 ---
 
 <BaseLayout title="Registration">
@@ -48,8 +50,19 @@ const formAction = `https://formspree.io/f/${formspreeId}`;
         be used to process your registration — see our <a href={withBase("/privacy")}>privacy notice</a>.
       </p>
 
-      <form action={formAction} method="POST" class="reg-form" novalidate>
-        <input type="hidden" name="_subject" value="STI 2026 — New registration" />
+      <div id="reg-success" class="callout success" hidden>
+        <h3 style="margin-top:0;">Thank you — your registration has been received.</h3>
+        <p>
+          A confirmation has been sent to your email address. Payment instructions
+          will follow by email shortly. If you don't see them within a few minutes,
+          please check your spam folder.
+        </p>
+        <p style="margin-bottom:0;">
+          For questions, email <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
+        </p>
+      </div>
+
+      <form id="reg-form" class="reg-form" novalidate hidden={false}>
         <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="gotcha" />
 
         <div class="form-grid">
@@ -129,14 +142,20 @@ const formAction = `https://formspree.io/f/${formspreeId}`;
           </div>
         </div>
 
+        {turnstileSiteKey && (
+          <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-action="register"></div>
+        )}
+
+        <p id="reg-error" class="warn" hidden></p>
+
         <p class="submit-row">
-          <button type="submit" class="btn btn-primary">Submit registration</button>
+          <button type="submit" class="btn btn-primary" id="reg-submit">Submit registration</button>
         </p>
 
-        {formspreeId === "your-form-id-here" && (
+        {!isConnected && (
           <p class="help warn">
-            <strong>Form not yet connected.</strong> This form is wired to submit to
-            Formspree — a real form ID will be added before the site goes public.
+            <strong>Form not yet connected.</strong> Set <code>PUBLIC_REGISTRATION_API</code>
+            and <code>PUBLIC_TURNSTILE_SITE_KEY</code> as repo variables before going live.
           </p>
         )}
       </form>
@@ -177,6 +196,77 @@ const formAction = `https://formspree.io/f/${formspreeId}`;
       </p>
     </div>
   </section>
+
+  {turnstileSiteKey && (
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  )}
+
+  <script define:vars={{ apiUrl, isConnected }}>
+    const form = document.getElementById('reg-form');
+    const successEl = document.getElementById('reg-success');
+    const errEl = document.getElementById('reg-error');
+    const btn = document.getElementById('reg-submit');
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (!isConnected) {
+          showError('The registration system is not yet connected. Please email the organizers.');
+          return;
+        }
+        errEl.hidden = true;
+        btn.disabled = true;
+        btn.textContent = 'Submitting…';
+
+        const fd = new FormData(form);
+        const presenting = fd.get('presenting');
+        if (!presenting) {
+          showError('Please indicate whether you are submitting a paper.');
+          btn.disabled = false; btn.textContent = 'Submit registration';
+          return;
+        }
+
+        const payload = {
+          firstName:      str(fd.get('firstName')),
+          lastName:       str(fd.get('lastName')),
+          email:          str(fd.get('email')),
+          affiliation:    str(fd.get('affiliation')),
+          position:       str(fd.get('position')),
+          country:        str(fd.get('country')),
+          presenting:     str(presenting),
+          paperTitle:     str(fd.get('paperTitle')),
+          dietary:        str(fd.get('dietary')),
+          accessibility:  str(fd.get('accessibility')),
+          invoiceDetails: str(fd.get('invoiceDetails')),
+          notes:          str(fd.get('notes')),
+          consent:        fd.get('consent') === 'on',
+          _gotcha:        str(fd.get('_gotcha')),
+          'cf-turnstile-response': str(fd.get('cf-turnstile-response')),
+        };
+
+        try {
+          const res = await fetch(apiUrl, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          const body = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(body.error || 'Submission failed.');
+          form.hidden = true;
+          successEl.hidden = false;
+          successEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        } catch (err) {
+          showError(err.message);
+          btn.disabled = false;
+          btn.textContent = 'Submit registration';
+          if (window.turnstile) window.turnstile.reset();
+        }
+      });
+    }
+
+    function str(v) { return v == null ? '' : String(v); }
+    function showError(m) { errEl.textContent = m; errEl.hidden = false; }
+  </script>
 </BaseLayout>
 
 <style>
@@ -233,6 +323,14 @@ const formAction = `https://formspree.io/f/${formspreeId}`;
     padding: 0.6rem 0.9rem;
     border-radius: var(--radius-sm);
     color: #7a5200;
+  }
+  .success {
+    background: #e7f6ec;
+    border-color: #a8d4b3;
+    color: #1f4c2c;
+  }
+  .cf-turnstile {
+    margin: 1.25rem 0 0;
   }
   code {
     background: rgba(10, 74, 122, 0.08);

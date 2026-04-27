@@ -38,15 +38,30 @@ Public assets (the CfP PDF, the castle photo, favicon) live under `public/`.
 
 ## Registration form
 
-The form submits to [Formspree](https://formspree.io/). To wire it up:
+Registrations are handled by a small **Cloudflare Worker** with a D1 (SQLite)
+database — fully self-hosted, free at our volume, no third-party form service.
+The Worker source lives in [`worker/`](./worker) and ships as a separate
+Cloudflare deploy. See [`worker/README.md`](./worker/README.md) for the full
+setup walkthrough.
 
-1. Create a Formspree account (EU region recommended for GDPR).
-2. Create a new form, copy the form ID (the part after `/f/` in the endpoint URL).
-3. Either:
-   - set `PUBLIC_FORMSPREE_ID` as a GitHub Actions variable (Settings → Actions → Variables), or
-   - edit `src/site.ts` and replace `formspreeId: "your-form-id-here"`.
+To wire the site to the Worker:
 
-Until this is done the form page shows a visible "Form not yet connected" warning.
+1. Deploy the Worker once (instructions in `worker/README.md`). Note the URL
+   it returns (e.g. `https://sti26-registration.<your-account>.workers.dev`).
+2. Create a Cloudflare Turnstile site at
+   [dash.cloudflare.com → Turnstile](https://dash.cloudflare.com) and copy
+   the **site key**.
+3. Set two GitHub Actions variables (Settings → Actions → Variables):
+   - `PUBLIC_REGISTRATION_API` — the Worker URL.
+   - `PUBLIC_TURNSTILE_SITE_KEY` — the Turnstile site key.
+
+Until both are set the form page shows a visible "Form not yet connected"
+warning.
+
+Submissions are stored in D1 and viewable at
+`<worker-url>/admin` (Bearer-token protected). Confirmation and
+notification emails go through Resend if `RESEND_API_KEY`, `FROM_EMAIL`,
+and `NOTIFY_EMAIL` are configured on the Worker.
 
 ## Payment placeholder
 

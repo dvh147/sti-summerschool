@@ -38,7 +38,8 @@ jobs:
           # Change these when a custom domain is configured.
           SITE_URL: ${{ vars.SITE_URL || 'https://dvh147.github.io' }}
           BASE_PATH: ${{ vars.BASE_PATH || '/sti-summerschool' }}
-          PUBLIC_FORMSPREE_ID: ${{ vars.PUBLIC_FORMSPREE_ID || secrets.PUBLIC_FORMSPREE_ID || 'your-form-id-here' }}
+          PUBLIC_REGISTRATION_API: ${{ vars.PUBLIC_REGISTRATION_API || 'https://your-worker.example.workers.dev' }}
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY || '' }}
         run: npm run build
 
       - uses: actions/upload-pages-artifact@v3
