@@ -19,12 +19,12 @@ export const site = {
     registration: { iso: "2026-08-15", label: "15 August 2026" },
   },
   partners: [
-    { name: "KU Leuven" },
-    { name: "Google" },
-    { name: "European Patent Office" },
-    { name: "SKEMA Business School" },
-    { name: "Université Côte d'Azur" },
-    { name: "UCD Dublin" },
+    { name: "KU Leuven", logo: "/images/logos/KULeuven.png" },
+    { name: "SKEMA Business School", logo: "/images/logos/Skema.png" },
+    { name: "Google", logo: "/images/logos/Google.png" },
+    { name: "European Patent Office", logo: "/images/logos/EPO.png" },
+    { name: "Université Côte d'Azur", logo: "/images/logos/University_CDA.jpg" },
+    { name: "UCD Dublin", logo: "/images/logos/UCD.png" },
   ],
   // Cloudflare Worker URL that handles registration submissions and the
   // admin dashboard. Override at build time via PUBLIC_REGISTRATION_API.
