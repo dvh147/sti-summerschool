@@ -9,18 +9,33 @@ const shape = [
   },
   {
     date: "Tuesday, 8 September 2026",
-    detail: "A full day of contributed sessions and keynote lectures, followed by a social gathering and dinner on the beach.",
+    detail: "Keynote lectures, contributed sessions, and the panel discussion on AI and innovation in Europe. Social gathering and dinner on the beach in the evening.",
   },
   {
     date: "Wednesday, 9 September 2026",
-    detail: "Morning sessions, the panel discussion on AI and innovation in Europe, closing remarks, and end of the summer school at noon.",
+    detail: "Morning of keynote lectures and contributed sessions, closing remarks, and end of the summer school at noon.",
   },
 ];
 
 const keynotes = [
-  { name: "Ashish Arora", affiliation: "Duke" },
-  { name: "Joshua Krieger", affiliation: "Harvard" },
-  { name: "Dashun Wang", affiliation: "Northwestern" },
+  {
+    name: "Ashish Arora",
+    affiliation: "Fuqua School of Business, Duke University",
+    photo: "/images/speakers/arora.jpg",
+    bio: "Rex D. Adams Professor of Business Administration. His work uses patent and licensing data to study the economics of technology, markets for technology, and the commercialisation of knowledge. Recent research documents the decline of corporate science and its consequences for innovation.",
+  },
+  {
+    name: "Joshua Krieger",
+    affiliation: "Harvard Business School",
+    photo: "/images/speakers/krieger.jpg",
+    bio: "Studies the economics and management of innovation in the life sciences using detailed pipeline-level data on pharmaceutical and biotech R&D. His work covers novelty, learning from failure, and how firms allocate scarce R&D resources.",
+  },
+  {
+    name: "Dashun Wang",
+    affiliation: "Kellogg School of Management, Northwestern University",
+    photo: "/images/speakers/wang.jpg",
+    bio: "Director of the Center for Science of Science and Innovation. His research uses large-scale data on careers, citations, and team formation to uncover quantitative patterns in scientific breakthroughs and creative productivity. Co-author of The Science of Science (Cambridge, 2021).",
+  },
 ];
 ---
 
@@ -30,23 +45,23 @@ const keynotes = [
       <p class="eyebrow">Program</p>
       <h1>Program</h1>
       <p class="lede">
-        The shape of the school and its main building blocks are set. The full schedule with
-        session titles, contributed papers, and timings will be published after the
-        paper-acceptance deadline.
+        The shape of the school and its main building blocks are set. We will
+        keep updating this page as more of the program comes together.
       </p>
 
       <div class="callout">
         <p style="margin-top:0;"><strong>Detailed schedule: to be announced.</strong></p>
-        <p style="margin-bottom:0;">
+        <p>
           We'll publish the full timetable shortly after
           <strong>{site.deadlines.notification.label}</strong>, the notification
           deadline for accepted papers. Submit your work via the
           <a href={withBase("/call-for-papers")}>call for papers</a> by
           {site.deadlines.submission.label}.
         </p>
+        <p style="margin-bottom:0;"><em>Everything below is subject to change.</em></p>
       </div>
 
-      <h2>Three-day overview</h2>
+      <h2>Overview</h2>
       <ul class="shape">
         {
           shape.map((d) => (
@@ -63,19 +78,29 @@ const keynotes = [
         Three confirmed keynote lectures from leading scholars in the economics and
         science of innovation.
       </p>
-      <ul class="block-list">
+      <div class="keynote-grid">
         {
           keynotes.map((k) => (
-            <li>
-              <strong>{k.name}</strong>
-              <span>{k.affiliation}</span>
-            </li>
+            <article class="keynote-card">
+              <div class="keynote-photo" aria-hidden="true">
+                {k.photo ? (
+                  <img src={withBase(k.photo)} alt={`${k.name} portrait`} loading="lazy" />
+                ) : (
+                  <span class="initials">
+                    {k.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </span>
+                )}
+              </div>
+              <h3>{k.name}</h3>
+              <p class="affiliation">{k.affiliation}</p>
+              <p class="bio">{k.bio}</p>
+            </article>
           ))
         }
-      </ul>
-      <p>
-        <a href={withBase("/speakers")}>More about the keynote speakers →</a>
-      </p>
+      </div>
 
       <h2>Practitioner sessions</h2>
       <p>
@@ -84,6 +109,7 @@ const keynotes = [
         They will introduce new initiatives, tools, and data resources that matter
         for academic research on science and innovation.
       </p>
+      <p class="soon"><em>More information on speakers and topics coming soon.</em></p>
 
       <h2>Panel discussion: AI as leverage for science and innovation in Europe</h2>
       <p>
@@ -92,6 +118,7 @@ const keynotes = [
         Ludovic Dibiaggio (SKEMA) and Reinhilde Veugelers (KU Leuven), with regional
         and EU policymakers and AI entrepreneurs.
       </p>
+      <p class="soon"><em>More information on panellists coming soon.</em></p>
 
       <h2>Contributed sessions</h2>
       <p>
@@ -100,17 +127,19 @@ const keynotes = [
       </p>
       <ul class="block-list">
         <li>
-          <strong>Short presentations (5 min)</strong>
+          <strong>Pitch presentations (5 min)</strong>
           <span>followed by a poster session for in-depth discussion.</span>
         </li>
         <li>
-          <strong>Long presentations (15 min)</strong>
+          <strong>Full presentations (15 min)</strong>
           <span>followed by plenary discussion.</span>
         </li>
       </ul>
       <p>
         The selection of contributions runs through the
-        <a href={withBase("/call-for-papers")}>call for papers</a>.
+        <a href={withBase("/call-for-papers")}>call for papers</a>. Participants are
+        also welcome to propose full paper sessions — get in touch at
+        <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
       </p>
     </div>
   </section>
@@ -141,6 +170,55 @@ const keynotes = [
     color: var(--color-muted);
     font-size: 0.95rem;
   }
+  .keynote-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    margin: 1.5rem 0 2rem;
+  }
+  .keynote-card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.25rem 1.5rem;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+  }
+  .keynote-photo {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+    display: grid;
+    place-items: center;
+    margin-bottom: 0.85rem;
+  }
+  .keynote-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .keynote-photo .initials {
+    color: #fff;
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 600;
+  }
+  .keynote-card h3 {
+    margin: 0;
+    color: var(--color-primary-700);
+  }
+  .keynote-card .affiliation {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+    margin: 0.1rem 0 0.65rem;
+  }
+  .keynote-card .bio {
+    font-size: 0.95rem;
+    margin: 0;
+  }
   .block-list {
     list-style: none;
     margin: 1rem 0 1.5rem;
@@ -159,5 +237,10 @@ const keynotes = [
   }
   .block-list span {
     color: var(--color-muted);
+  }
+  .soon {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    margin-top: -0.5rem;
   }
 </style>

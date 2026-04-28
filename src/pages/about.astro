@@ -14,34 +14,57 @@ import { withBase } from "../site";
         science and innovation.
       </p>
 
-      <h2>The series</h2>
+      <h2>About STI</h2>
       <p>
-        The school started in Leuven as a focused workshop on data and algorithms in
-        science and technology research. Over the past decade it has grown into a small
-        conference with around 80–100 participants — mostly PhD students and early-career
-        researchers from economics, management, and sociology, drawn together by an
-        interest in large-scale data on science and innovation.
+        The school started in Leuven as a small, low-pressure event run by a handful
+        of PhD students. The idea was simple: get together to learn from each other
+        and from experts about what is going on with patent and publication data —
+        what it can do, where its limits are, and how to use it well. Informal by
+        design, with the pizza-truck dinner that veterans still remember.
       </p>
       <p>
-        We typically feature a few keynote lectures alongside sessions from organizations
-        like the European Patent Office and Google on new data products. Past editions have
-        featured speakers including Lee Fleming, Matt Marx, Adam Jaffe, Florenta Teodoridis,
-        Ralf Martin, Dietmar Harhoff, and Ina Ganguli, among many others.
+        It turned out there was real interest beyond PhD students, especially from
+        the data providers and other practitioners who were curious to know their
+        academic users better. The school grew into a small conference. We
+        deliberately keep it small and stick to a single track: the topic is
+        homogeneous enough that everyone benefits from seeing everything, and
+        informal exchange is much easier when nobody has to choose between rooms.
+      </p>
+      <p>
+        We have been fortunate that leading scholars in the community keep supporting
+        the school with their keynotes, comments, and presence — bridging the data
+        and methods we work on with the substantive contributions our field wants
+        to make. That, after all, is the point: better metrics and better algorithms
+        should help our field answer better questions and make stronger contributions
+        to the literature. We are always open to input from participants on how to
+        keep doing this well; reach out anytime.
       </p>
 
-      <h2>The 2026 edition</h2>
-      <p>
-        This year marks the 11th edition. It takes place from 7 to 9 September 2026 in the
-        19th-century Valrose Castle in Nice, hosted by SKEMA Business School in collaboration
-        with KU Leuven, Google, the European Patent Office, Université Côte d'Azur, and
-        UCD Dublin.
-      </p>
-      <p>
-        The program kicks off at noon on 7 September with targeted sessions and workshops
-        for early-career scholars, including guest speakers from Google and the EPO. A full
-        day of sessions on 8 September is followed by a social gathering and dinner on
-        the beach. The school closes at noon on 9 September.
-      </p>
+      <h2>Why join</h2>
+      <ul class="benefits">
+        <li>
+          <strong>Learn state-of-the-art methods.</strong>
+          Keynotes and practitioner sessions take you to the current frontier of
+          what data and algorithms can — and cannot — do for ST&amp;I research.
+        </li>
+        <li>
+          <strong>Present and discuss your work.</strong>
+          Pitch and full presentations welcome work at any stage, including
+          early-stage ideas. The conversation continues over coffee, dinner, and
+          on the beach.
+        </li>
+        <li>
+          <strong>Connect with the community.</strong>
+          PhD students, postdocs, and senior scholars working with the same data
+          and questions. You will find that the community knows much more than
+          what a Google search or an LLM prompt will tell you.
+        </li>
+        <li>
+          <strong>Have fun nerding out.</strong>
+          Few of us get to discuss the intricacies of patent data at length around
+          our kitchen tables. Three days at Valrose make up for it.
+        </li>
+      </ul>
 
       <h2>Who should attend</h2>
       <ul>
@@ -58,10 +81,55 @@ import { withBase } from "../site";
 
       <h2>Past editions</h2>
       <ul>
-        <li>2025 — 10th edition, KU Leuven (Kasteel van Arenberg)</li>
-        <li>2024 — 9th edition, University of Antwerp</li>
+        <li>
+          2025 — 10th edition,
+          <a
+            href="https://www.kuleuven.be/english/summer-schools/10th-summer-school-on-data-algorithms-for-st-i-studies"
+            target="_blank"
+            rel="noopener"
+          >KU Leuven</a>
+        </li>
+        <li>
+          2024 — 9th edition,
+          <a
+            href="https://feb.kuleuven.be/drc/MSI/sti"
+            target="_blank"
+            rel="noopener"
+          >KU Leuven, Campus Antwerp</a>
+          (not the University of Antwerp)
+        </li>
+        <li>
+          2023 — 8th edition,
+          <a
+            href="https://www.ub.edu/business-school/8th-summer-school-on-data-and-algorithms-for-sti-studies/"
+            target="_blank"
+            rel="noopener"
+          >University of Barcelona</a>
+        </li>
         <li>Earlier editions hosted by KU Leuven and partners</li>
       </ul>
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .benefits {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 1.5rem;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .benefits li {
+    padding: 0.85rem 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-left: 4px solid var(--color-accent);
+    border-radius: var(--radius-sm);
+  }
+  .benefits strong {
+    color: var(--color-primary-700);
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+</style>
