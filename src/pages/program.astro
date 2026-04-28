@@ -42,8 +42,7 @@ const keynotes = [
 <BaseLayout title="Program">
   <section class="section">
     <div class="container-narrow prose">
-      <p class="eyebrow">Program</p>
-      <h1>Program</h1>
+      <p class="eyebrow eyebrow-lg page-title">Program</p>
       <p class="lede">
         The shape of the school and its main building blocks are set. We will
         keep updating this page as more of the program comes together.
@@ -146,6 +145,11 @@ const keynotes = [
 </BaseLayout>
 
 <style>
+  .page-title {
+    font-size: clamp(2rem, 1.4rem + 2.5vw, 3rem);
+    letter-spacing: 0.04em;
+    margin-bottom: 1.25rem;
+  }
   .shape {
     list-style: none;
     margin: 1.5rem 0;
@@ -186,24 +190,26 @@ const keynotes = [
     flex-direction: column;
   }
   .keynote-photo {
-    width: 88px;
-    height: 88px;
-    border-radius: 50%;
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 4 / 5;
+    border-radius: var(--radius);
     overflow: hidden;
     background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
     display: grid;
     place-items: center;
-    margin-bottom: 0.85rem;
+    margin-bottom: 1rem;
   }
   .keynote-photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center top;
   }
   .keynote-photo .initials {
     color: #fff;
     font-family: var(--font-serif);
-    font-size: 1.6rem;
+    font-size: 2.4rem;
     font-weight: 600;
   }
   .keynote-card h3 {
