@@ -5,16 +5,22 @@ import { site, withBase } from "../site";
 const shape = [
   {
     date: "Monday, 7 September 2026",
-    detail: "Kick-off at noon. Afternoon sessions and workshops for early-career scholars, including guest sessions from Google and the European Patent Office.",
+    detail: "Kick-off at noon. Afternoon practitioner sessions with guest speakers from Google and the European Patent Office.",
   },
   {
     date: "Tuesday, 8 September 2026",
-    detail: "A full day of sessions and keynote lectures, followed by a social gathering and dinner on the beach.",
+    detail: "A full day of contributed sessions and keynote lectures, followed by a social gathering and dinner on the beach.",
   },
   {
     date: "Wednesday, 9 September 2026",
-    detail: "Morning sessions, closing remarks, and end of the summer school at noon.",
+    detail: "Morning sessions, the panel discussion on AI and innovation in Europe, closing remarks, and end of the summer school at noon.",
   },
+];
+
+const keynotes = [
+  { name: "Ashish Arora", affiliation: "Duke" },
+  { name: "Joshua Krieger", affiliation: "Harvard" },
+  { name: "Dashun Wang", affiliation: "Northwestern" },
 ];
 ---
 
@@ -24,15 +30,15 @@ const shape = [
       <p class="eyebrow">Program</p>
       <h1>Program</h1>
       <p class="lede">
-        The three-day shape of the school is set; the detailed schedule with
-        session titles, speakers, and timings will be announced after the
+        The shape of the school and its main building blocks are set. The full schedule with
+        session titles, contributed papers, and timings will be published after the
         paper-acceptance deadline.
       </p>
 
       <div class="callout">
-        <p style="margin-top:0;"><strong>Detailed program: to be announced.</strong></p>
+        <p style="margin-top:0;"><strong>Detailed schedule: to be announced.</strong></p>
         <p style="margin-bottom:0;">
-          We'll publish the full schedule shortly after
+          We'll publish the full timetable shortly after
           <strong>{site.deadlines.notification.label}</strong>, the notification
           deadline for accepted papers. Submit your work via the
           <a href={withBase("/call-for-papers")}>call for papers</a> by
@@ -52,10 +58,59 @@ const shape = [
         }
       </ul>
 
+      <h2>Keynote lectures</h2>
       <p>
-        Keynote lectures by <a href={withBase("/speakers")}>Ashish Arora, Joshua Krieger, and Dashun Wang</a>,
-        alongside an interactive panel on AI and Innovation in Europe with
-        Ludovic Dibiaggio (SKEMA) and Reinhilde Veugelers (KU Leuven).
+        Three confirmed keynote lectures from leading scholars in the economics and
+        science of innovation.
+      </p>
+      <ul class="block-list">
+        {
+          keynotes.map((k) => (
+            <li>
+              <strong>{k.name}</strong>
+              <span>{k.affiliation}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p>
+        <a href={withBase("/speakers")}>More about the keynote speakers →</a>
+      </p>
+
+      <h2>Practitioner sessions</h2>
+      <p>
+        The first afternoon features practitioner sessions with guest speakers from
+        <strong> Google</strong> and the <strong>European Patent Office</strong>.
+        They will introduce new initiatives, tools, and data resources that matter
+        for academic research on science and innovation.
+      </p>
+
+      <h2>Panel discussion: AI as leverage for science and innovation in Europe</h2>
+      <p>
+        An interactive panel where AI entrepreneurs and policymakers debate whether — and
+        how — Europe can harness AI to advance science and innovation. Moderated by
+        Ludovic Dibiaggio (SKEMA) and Reinhilde Veugelers (KU Leuven), with regional
+        and EU policymakers and AI entrepreneurs.
+      </p>
+
+      <h2>Contributed sessions</h2>
+      <p>
+        Contributed work from participants is presented in two formats. There are
+        <strong>no parallel tracks</strong> — everyone sees everything.
+      </p>
+      <ul class="block-list">
+        <li>
+          <strong>Short presentations (5 min)</strong>
+          <span>followed by a poster session for in-depth discussion.</span>
+        </li>
+        <li>
+          <strong>Long presentations (15 min)</strong>
+          <span>followed by plenary discussion.</span>
+        </li>
+      </ul>
+      <p>
+        The selection of contributions runs through the
+        <a href={withBase("/call-for-papers")}>call for papers</a>.
       </p>
     </div>
   </section>
@@ -85,5 +140,24 @@ const shape = [
   .shape-detail {
     color: var(--color-muted);
     font-size: 0.95rem;
+  }
+  .block-list {
+    list-style: none;
+    margin: 1rem 0 1.5rem;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .block-list li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.75rem;
+    padding: 0.6rem 0.9rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+  }
+  .block-list span {
+    color: var(--color-muted);
   }
 </style>
