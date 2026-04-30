@@ -72,7 +72,29 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
       <form id="reg-form" class="reg-form" novalidate hidden={false}>
         <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="gotcha" />
 
+        <h3 class="form-section-title">About you</h3>
         <div class="form-grid">
+          <div>
+            <label for="title">Title</label>
+            <select id="title" name="title">
+              <option value="">—</option>
+              <option value="Mr">Mr</option>
+              <option value="Ms">Ms</option>
+              <option value="Dr">Dr</option>
+              <option value="Prof">Prof</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="participantType">I am attending as <span class="required">*</span></label>
+            <select id="participantType" name="participantType" required>
+              <option value="participant" selected>Participant</option>
+              <option value="keynote">Keynote speaker</option>
+              <option value="organizer">Organizer</option>
+              <option value="volunteer">Volunteer</option>
+            </select>
+          </div>
+
           <div>
             <label for="firstName">First name <span class="required">*</span></label>
             <input id="firstName" name="firstName" type="text" autocomplete="given-name" required />
@@ -88,19 +110,57 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
           </div>
 
           <div>
-            <label for="affiliation">Affiliation <span class="required">*</span></label>
-            <input id="affiliation" name="affiliation" type="text" autocomplete="organization" required />
+            <label for="phone">Phone (mobile)</label>
+            <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="for last-minute on-site contact" />
           </div>
           <div>
-            <label for="position">Position / role</label>
-            <input id="position" name="position" type="text" placeholder="e.g. PhD student, Assistant Professor" />
+            <label for="affiliation">Institution / affiliation <span class="required">*</span></label>
+            <input id="affiliation" name="affiliation" type="text" autocomplete="organization" required />
           </div>
 
           <div class="full">
+            <label for="position">Position / role</label>
+            <input id="position" name="position" type="text" placeholder="e.g. PhD student, Assistant Professor" />
+          </div>
+        </div>
+
+        <h3 class="form-section-title">Address</h3>
+        <p class="help">Used for the participant list and for invoicing where applicable.</p>
+        <div class="form-grid">
+          <div style="grid-column: span 2;">
+            <label for="street">Street <span class="required">*</span></label>
+            <input id="street" name="street" type="text" autocomplete="address-line1" required />
+          </div>
+          <div>
+            <label for="streetNumber">Number <span class="required">*</span></label>
+            <input id="streetNumber" name="streetNumber" type="text" required />
+          </div>
+          <div>
+            <label for="box">Box / unit</label>
+            <input id="box" name="box" type="text" />
+          </div>
+
+          <div>
+            <label for="postalCode">Postal code <span class="required">*</span></label>
+            <input id="postalCode" name="postalCode" type="text" autocomplete="postal-code" required />
+          </div>
+          <div>
+            <label for="city">City <span class="required">*</span></label>
+            <input id="city" name="city" type="text" autocomplete="address-level2" required />
+          </div>
+
+          <div>
             <label for="country">Country</label>
             <input id="country" name="country" type="text" autocomplete="country-name" />
           </div>
+          <div>
+            <label for="vatNumber">VAT number</label>
+            <input id="vatNumber" name="vatNumber" type="text" placeholder="if your institution requires it on the invoice" />
+          </div>
+        </div>
 
+        <h3 class="form-section-title">Submission</h3>
+        <div class="form-grid">
           <div class="full">
             <label>Are you submitting a paper? <span class="required">*</span></label>
             <div class="radio-row">
@@ -118,6 +178,19 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
             <label for="paperTitle">Paper / abstract title (if presenting)</label>
             <input id="paperTitle" name="paperTitle" type="text" />
           </div>
+        </div>
+
+        <h3 class="form-section-title">Practical</h3>
+        <div class="form-grid">
+          <div class="full">
+            <label>Meals (please untick what you don't need so we can plan catering)</label>
+            <div class="check-grid">
+              <label class="checkbox"><input type="checkbox" name="mealMonLunch"  checked /> Lunch — Monday 7 September</label>
+              <label class="checkbox"><input type="checkbox" name="mealTueLunch"  checked /> Lunch — Tuesday 8 September</label>
+              <label class="checkbox"><input type="checkbox" name="mealWedLunch"  checked /> Lunch — Wednesday 9 September</label>
+              <label class="checkbox"><input type="checkbox" name="mealTueDinner" checked /> Beach dinner — Tuesday 8 September evening</label>
+            </div>
+          </div>
 
           <div class="full">
             <label for="dietary">Dietary requirements</label>
@@ -130,21 +203,39 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
           </div>
 
           <div class="full">
-            <label for="invoiceDetails">Invoice details</label>
-            <textarea id="invoiceDetails" name="invoiceDetails" placeholder="Billing name, address, VAT number (if required)"></textarea>
+            <label for="invoiceDetails">Extra invoice details (optional)</label>
+            <textarea id="invoiceDetails" name="invoiceDetails" placeholder="Anything specific your finance department needs on the invoice (PO number, billing reference, etc.)"></textarea>
           </div>
 
           <div class="full">
             <label for="notes">Anything else we should know?</label>
             <textarea id="notes" name="notes"></textarea>
           </div>
+        </div>
 
+        <h3 class="form-section-title">Consents</h3>
+        <div class="form-grid">
           <div class="full checkbox">
             <input id="consent" name="consent" type="checkbox" required />
             <label for="consent">
               I consent to the organizers processing the information above for the
               purpose of registering me for the STI Summer School 2026, as described
               in the <a href={withBase("/privacy")}>privacy notice</a>. <span class="required">*</span>
+            </label>
+          </div>
+          <div class="full checkbox">
+            <input id="photoConsent" name="photoConsent" type="checkbox" />
+            <label for="photoConsent">
+              I am aware that photographs and short videos may be taken during the
+              summer school for documentation and communication purposes, and I
+              consent to my image being used in that context.
+            </label>
+          </div>
+          <div class="full checkbox">
+            <input id="attendeeListConsent" name="attendeeListConsent" type="checkbox" />
+            <label for="attendeeListConsent">
+              You may include my full name, affiliation and email address on the
+              participant list distributed to attendees during the summer school.
             </label>
           </div>
         </div>
@@ -234,19 +325,34 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
         }
 
         const payload = {
+          title:          str(fd.get('title')),
           firstName:      str(fd.get('firstName')),
           lastName:       str(fd.get('lastName')),
           email:          str(fd.get('email')),
+          phone:          str(fd.get('phone')),
           affiliation:    str(fd.get('affiliation')),
           position:       str(fd.get('position')),
+          participantType: str(fd.get('participantType')),
+          street:         str(fd.get('street')),
+          streetNumber:   str(fd.get('streetNumber')),
+          box:            str(fd.get('box')),
+          postalCode:     str(fd.get('postalCode')),
+          city:           str(fd.get('city')),
           country:        str(fd.get('country')),
+          vatNumber:      str(fd.get('vatNumber')),
           presenting:     str(presenting),
           paperTitle:     str(fd.get('paperTitle')),
           dietary:        str(fd.get('dietary')),
           accessibility:  str(fd.get('accessibility')),
           invoiceDetails: str(fd.get('invoiceDetails')),
           notes:          str(fd.get('notes')),
-          consent:        fd.get('consent') === 'on',
+          mealMonLunch:   fd.get('mealMonLunch')  === 'on',
+          mealTueLunch:   fd.get('mealTueLunch')  === 'on',
+          mealWedLunch:   fd.get('mealWedLunch')  === 'on',
+          mealTueDinner:  fd.get('mealTueDinner') === 'on',
+          consent:             fd.get('consent') === 'on',
+          photoConsent:        fd.get('photoConsent') === 'on',
+          attendeeListConsent: fd.get('attendeeListConsent') === 'on',
           _gotcha:        str(fd.get('_gotcha')),
           'cf-turnstile-response': str(fd.get('cf-turnstile-response')),
         };
@@ -312,6 +418,24 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
   }
   .reg-form {
     margin-top: 1.25rem;
+  }
+  .form-section-title {
+    margin: 1.75rem 0 0.5rem;
+    font-size: 1.1rem;
+    color: var(--color-primary-700);
+    border-top: 1px solid var(--color-line);
+    padding-top: 1.25rem;
+  }
+  .reg-form > .form-section-title:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+    margin-top: 0;
+  }
+  .check-grid {
+    display: grid;
+    gap: 0.4rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    margin-top: 0.35rem;
   }
   .radio-row {
     display: flex;
