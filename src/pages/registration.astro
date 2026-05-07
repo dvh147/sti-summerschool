@@ -2,6 +2,12 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { site, withBase } from "../site";
 
+// Flip to `true` once the SKEMA bank details (IBAN/BIC) are confirmed and
+// we're ready to accept registrations publicly. Everything below is wired
+// up and tested — turning this back on re-enables the form, the payment
+// callout, and the lede that points people at the form.
+const registrationOpen = false;
+
 const apiBase = import.meta.env.PUBLIC_REGISTRATION_API || site.registrationApi;
 const apiUrl = `${apiBase.replace(/\/$/, "")}/api/register`;
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || site.turnstileSiteKey;
@@ -13,10 +19,17 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
     <div class="container-narrow prose">
       <p class="eyebrow">Registration</p>
       <h1>Register for STI 2026</h1>
-      <p class="lede">
-        Whether you are presenting a paper or joining as a participant, please fill in
-        the registration form below. Payment instructions follow by email.
-      </p>
+      {registrationOpen ? (
+        <p class="lede">
+          Whether you are presenting a paper or joining as a participant, please fill in
+          the registration form below. Payment instructions follow by email.
+        </p>
+      ) : (
+        <p class="lede">
+          Registration will open shortly. The participant fee and what it covers are
+          listed below so you can plan ahead — please check back soon to register.
+        </p>
+      )}
 
       <div class="fee-box">
         <div>
@@ -42,6 +55,27 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
     </div>
   </section>
 
+  {!registrationOpen && (
+    <section class="section">
+      <div class="container-narrow">
+        <div class="callout">
+          <h2 style="margin-top:0;">Registration opens soon</h2>
+          <p>
+            We are putting the finishing touches on the payment details. The
+            online registration form will go live on this page in the next few
+            weeks — well before the registration deadline of
+            {" "}{site.deadlines.registration.label}.
+          </p>
+          <p style="margin-bottom:0;">
+            In the meantime, if you have questions or want to flag your interest,
+            email <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+  )}
+
+  {registrationOpen && (
   <section class="section form-section">
     <div class="container-narrow">
       <h2>Registration form</h2>
@@ -259,7 +293,9 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
       </form>
     </div>
   </section>
+  )}
 
+  {registrationOpen && (
   <section class="section">
     <div class="container-narrow">
       <h2>Payment</h2>
@@ -294,11 +330,13 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
       </p>
     </div>
   </section>
+  )}
 
-  {turnstileSiteKey && (
+  {registrationOpen && turnstileSiteKey && (
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   )}
 
+  {registrationOpen && (
   <script define:vars={{ apiUrl, isConnected }}>
     const form = document.getElementById('reg-form');
     const successEl = document.getElementById('reg-success');
@@ -380,6 +418,7 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
     function str(v) { return v == null ? '' : String(v); }
     function showError(m) { errEl.textContent = m; errEl.hidden = false; }
   </script>
+  )}
 </BaseLayout>
 
 <style>
