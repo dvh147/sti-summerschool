@@ -16,15 +16,15 @@ import { site } from "../site";
       <h2>What we collect</h2>
       <p>
         Through the registration form we collect the information you provide: name,
-        email, affiliation, role, country, paper details (if submitting), dietary and
-        accessibility needs, and invoice details.
+        email, affiliation, role, postal address, country, paper details (if
+        submitting), and dietary and accessibility needs.
       </p>
 
       <h2>Why we collect it</h2>
       <ul>
         <li>To register you for the event and communicate with you about it.</li>
         <li>To plan catering, seating, and accommodations.</li>
-        <li>To invoice you and process payment of the registration fee.</li>
+        <li>To process payment of the registration fee.</li>
         <li>To evaluate submitted abstracts and papers.</li>
       </ul>
       <p>
@@ -38,8 +38,9 @@ import { site } from "../site";
         (see <a href="./committee">committee</a>) and is processed on their behalf by:
       </p>
       <ul>
-        <li><strong>Formspree</strong> — the form-handling service that receives submissions from this site.</li>
-        <li><strong>SKEMA Business School</strong> — for invoicing and payment processing.</li>
+        <li><strong>Cloudflare</strong> — hosts the registration backend that receives and stores submissions from this site.</li>
+        <li><strong>Resend</strong> — the email service we use to send registration confirmations and follow-up messages.</li>
+        <li><strong>SKEMA Business School</strong> — for payment processing of the registration fee.</li>
       </ul>
       <p>We do not share your data with third parties for any other purpose.</p>
 

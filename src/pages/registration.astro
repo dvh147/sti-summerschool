@@ -6,7 +6,7 @@ import { site, withBase } from "../site";
 // we're ready to accept registrations publicly. Everything below is wired
 // up and tested — turning this back on re-enables the form, the payment
 // callout, and the lede that points people at the form.
-const registrationOpen = false;
+const registrationOpen = true;
 
 const apiBase = import.meta.env.PUBLIC_REGISTRATION_API || site.registrationApi;
 const apiUrl = `${apiBase.replace(/\/$/, "")}/api/register`;
@@ -159,7 +159,7 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
         </div>
 
         <h3 class="form-section-title">Address</h3>
-        <p class="help">Used for the participant list and for invoicing where applicable.</p>
+        <p class="help">Used for the participant list and our records.</p>
         <div class="form-grid">
           <div style="grid-column: span 2;">
             <label for="street">Street <span class="required">*</span></label>
@@ -186,10 +186,6 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
           <div>
             <label for="country">Country</label>
             <input id="country" name="country" type="text" autocomplete="country-name" />
-          </div>
-          <div>
-            <label for="vatNumber">VAT number</label>
-            <input id="vatNumber" name="vatNumber" type="text" placeholder="if your institution requires it on the invoice" />
           </div>
         </div>
 
@@ -234,11 +230,6 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
           <div class="full">
             <label for="accessibility">Accessibility needs</label>
             <input id="accessibility" name="accessibility" type="text" placeholder="Tell us how we can make the event accessible for you" />
-          </div>
-
-          <div class="full">
-            <label for="invoiceDetails">Extra invoice details (optional)</label>
-            <textarea id="invoiceDetails" name="invoiceDetails" placeholder="Anything specific your finance department needs on the invoice (PO number, billing reference, etc.)"></textarea>
           </div>
 
           <div class="full">
@@ -301,28 +292,30 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
       <h2>Payment</h2>
       <div class="callout">
         <p style="margin-top:0;">
-          <strong>Payment is handled separately</strong> from this form. After you submit
-          your registration, you will receive payment instructions by email.
+          The participant fee of <strong>{site.fee}</strong> is collected by SKEMA
+          Business School by <strong>SEPA bank transfer</strong>. You will also receive
+          these details in your confirmation email after registering.
         </p>
-        <p>
-          Participant fees are collected by SKEMA Business School. Payment will be possible via:
-        </p>
-        <ul>
-          <li>
-            <strong>SEPA bank transfer</strong> to the SKEMA account provided in your
-            confirmation email. Please use the reference
-            <code>STI2026-&lt;your last name&gt;</code>.
-          </li>
-          <li>
-            <em>(Optional, to be confirmed)</em> a dedicated payment link on a secure
-            platform for card payments.
-          </li>
-        </ul>
-        <p style="margin-bottom:0;" class="help">
-          <strong>Placeholder:</strong> the final IBAN, BIC and any payment-link URL
-          will appear here before the registration deadline of {site.deadlines.registration.label}.
+        <table class="bank-table">
+          <tbody>
+            <tr><th>Beneficiary</th><td>SKEMA Business School</td></tr>
+            <tr><th>Bank</th><td>Société Générale</td></tr>
+            <tr><th>IBAN</th><td><code>FR76 3000 3036 0500 1500 0270 217</code></td></tr>
+            <tr><th>BIC / SWIFT</th><td><code>SOGEFRPPXXX</code></td></tr>
+            <tr><th>Reference</th><td><code>Conférence ST&amp;I septembre 2026 – &lt;YOUR LAST NAME&gt;</code></td></tr>
+          </tbody>
+        </table>
+        <p style="margin-bottom:0;">
+          <strong>Please use the reference above exactly</strong>, including your last
+          name, so we can match your payment to your registration.
         </p>
       </div>
+
+      <p class="help">
+        Need a <strong>confirmation of payment</strong> for your records? Just email us
+        and we will send one. Please note that fees are <strong>non-refundable</strong>
+        in case of cancellation.
+      </p>
 
       <p>
         For questions about registration or payment, email
@@ -377,12 +370,10 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
           postalCode:     str(fd.get('postalCode')),
           city:           str(fd.get('city')),
           country:        str(fd.get('country')),
-          vatNumber:      str(fd.get('vatNumber')),
           presenting:     str(presenting),
           paperTitle:     str(fd.get('paperTitle')),
           dietary:        str(fd.get('dietary')),
           accessibility:  str(fd.get('accessibility')),
-          invoiceDetails: str(fd.get('invoiceDetails')),
           notes:          str(fd.get('notes')),
           mealMonLunch:   fd.get('mealMonLunch')  === 'on',
           mealTueLunch:   fd.get('mealTueLunch')  === 'on',
@@ -507,5 +498,20 @@ const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey
     padding: 2px 6px;
     border-radius: 4px;
     font-size: 0.9em;
+  }
+  .bank-table {
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+  .bank-table th,
+  .bank-table td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.3rem 1rem 0.3rem 0;
+  }
+  .bank-table th {
+    color: var(--color-muted);
+    font-weight: 600;
+    white-space: nowrap;
   }
 </style>
