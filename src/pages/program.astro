@@ -2,18 +2,407 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { site, withBase } from "../site";
 
-const shape = [
+// Full program, transcribed from the preliminary program booklet
+// (public/docs/STI-2026-Program.pdf). Keep the two in sync when the
+// booklet is regenerated.
+const days = [
   {
+    id: "monday",
     date: "Monday, 7 September 2026",
-    detail: "Kick-off at noon. Afternoon practitioner sessions with guest speakers from Google and the European Patent Office.",
+    slots: [
+      { time: "12:00–12:45", title: "Registration & lunch", kind: "break" },
+      {
+        time: "12:45–13:00",
+        title: "Opening remarks",
+        kind: "remarks",
+        speakers: [{ name: "Bart Van Looy" }],
+      },
+      {
+        time: "13:00–13:45",
+        title: "Industry & Practice",
+        chair: "Bart Van Looy",
+        kind: "industry",
+        items: [
+          {
+            title: "EPO Data Products and Projects: What’s New & What’s Next?",
+            speakers: [
+              { name: "Yann Menière", affiliation: "Chief Economist, EPO" },
+              { name: "Victor Arribas Martinez", affiliation: "EPO Observatory" },
+              { name: "Catalina Martinez", affiliation: "CSIC-IPP" },
+            ],
+          },
+        ],
+      },
+      {
+        time: "13:45–14:45",
+        title: "Poster Slam I",
+        chair: "Julie Callaert",
+        kind: "posters",
+        note: "Poster presenters pitch their research in four minutes each. During the break you will find them at their poster for an in-depth discussion — please take your coffee with a poster or two.",
+        link: { href: "#poster-slam-i", label: "All Poster Slam I pitches" },
+      },
+      { time: "14:45–15:15", title: "Coffee with posters", kind: "break" },
+      {
+        time: "15:15–16:15",
+        title: "Keynote I",
+        chair: "Dennis Verhoeven",
+        kind: "keynote",
+        items: [
+          {
+            speakers: [{ name: "Ashish Arora", affiliation: "Duke University" }],
+            tag: "online",
+          },
+        ],
+      },
+      {
+        time: "16:15–17:00",
+        title: "Industry & Practice",
+        chair: "Bart Van Looy",
+        kind: "industry",
+        items: [
+          {
+            title: "Google session: Patent data organization using LLMs",
+            speakers: [{ name: "James Forman", affiliation: "Data scientist at Google" }],
+          },
+        ],
+      },
+      { time: "17:00–17:30", title: "Coffee", kind: "break" },
+      {
+        time: "17:30–19:00",
+        title: "Paper Session I",
+        chair: "Ludovic Dibiaggio",
+        theme: "Exploring the knowledge space of innovation",
+        kind: "papers",
+        items: [
+          {
+            title: "Mapping the Problem Space of Innovation",
+            speakers: [{ name: "Fabian Gaessler", affiliation: "Pompeu Fabra / Max Planck" }],
+          },
+          {
+            title:
+              "Knowing the Hammer or the Nail: Problem- vs Solution-Domain Knowledge Specialization",
+            speakers: [{ name: "Nikki Lagerweij", affiliation: "ETH Zurich" }],
+          },
+          {
+            title: "AI in the Lab: AlphaFold2’s Impacts on Human-Produced Knowledge",
+            speakers: [{ name: "Jerry (Jiarui) Qian", affiliation: "University of Virginia" }],
+          },
+          {
+            title:
+              "From Invention to Innovation: How AI as a General-Purpose Technology Reconfigures Patent Commercialization",
+            speakers: [{ name: "Yuan Yuan", affiliation: "Warwick Business School" }],
+          },
+        ],
+      },
+    ],
   },
   {
+    id: "tuesday",
     date: "Tuesday, 8 September 2026",
-    detail: "Keynote lectures, contributed sessions, and the panel discussion on AI and innovation in Europe. Social gathering and dinner on the beach in the evening.",
+    slots: [
+      {
+        time: "09:00–10:00",
+        title: "Keynote II",
+        chair: "Reinhilde Veugelers",
+        kind: "keynote",
+        items: [
+          {
+            title: "Airplanes for the mind: AI agents and the science of science",
+            speakers: [{ name: "Dashun Wang", affiliation: "Kellogg, Northwestern" }],
+          },
+        ],
+      },
+      {
+        time: "10:00–11:00",
+        title: "Poster Slam II",
+        chair: "Julie Callaert",
+        kind: "posters",
+        note: "Poster presenters pitch their research in four minutes each. During the break you will find them at their poster for an in-depth discussion — please take your coffee with a poster or two.",
+        link: { href: "#poster-slam-ii", label: "All Poster Slam II pitches" },
+      },
+      { time: "11:00–11:30", title: "Coffee with posters", kind: "break" },
+      {
+        time: "11:30–13:00",
+        title: "Paper Session II",
+        chair: "Paul-Emmanuel Anckaert",
+        theme: "The science of science: careers, evaluation & funding",
+        kind: "papers",
+        items: [
+          {
+            title: "Middle-Status Myopia",
+            speakers: [{ name: "Marlon Alves", affiliation: "SKEMA Business School" }],
+          },
+          {
+            title: "The Commercial Value of (Cut) Science",
+            speakers: [{ name: "Antoine Mathieu Collin", affiliation: "KU Leuven" }],
+          },
+          {
+            title:
+              "Expertise and Predictive Validity in Grant Peer Review: Evidence from the Novo Nordisk Foundation",
+            speakers: [{ name: "Andola Stanaj", affiliation: "Politecnico di Milano" }],
+          },
+          {
+            title: "Mapping Professional Identity Strategies in Academic Narratives",
+            speakers: [{ name: "Luca Bollinger", affiliation: "KU Leuven" }],
+          },
+        ],
+      },
+      { time: "13:00–14:00", title: "Lunch", kind: "break" },
+      {
+        time: "14:00–15:00",
+        title: "Keynote III",
+        chair: "Sam Arts",
+        kind: "keynote",
+        items: [
+          {
+            speakers: [{ name: "Joshua Krieger", affiliation: "Harvard Business School" }],
+          },
+        ],
+      },
+      { time: "15:00–15:30", title: "Coffee", kind: "break" },
+      {
+        time: "15:30–17:00",
+        title: "Paper Session III",
+        chair: "Dennis Verhoeven",
+        theme: "New patent indicators & measurement",
+        kind: "papers",
+        items: [
+          {
+            title:
+              "CLEARPAT: AI-Curated Full Historical USPTO Patent Information for Research, 1836–1975",
+            speakers: [{ name: "Zenne Hellinga", affiliation: "Utrecht University" }],
+          },
+          {
+            title:
+              "A Shot in the Dark: From Patent-Value Predictors to Meaningful Economic Signals",
+            speakers: [{ name: "Simen Gaens", affiliation: "KU Leuven" }],
+          },
+          {
+            title: "Hidden Reliance on Scientific Ideas and Firm Innovation",
+            speakers: [{ name: "Nicola Melluso", affiliation: "LUISS University" }],
+          },
+          {
+            title:
+              "Examination Timing and Prior Art Relevance: Evidence from Semantic Similarity of Patent Citations",
+            speakers: [{ name: "Yasushi Hara", affiliation: "Kobe University" }],
+          },
+        ],
+      },
+      { time: "17:00–17:20", title: "Coffee", kind: "break" },
+      {
+        time: "17:20–18:45",
+        title: "Panel: AI & Innovation in Europe",
+        kind: "panel",
+        hosts: [
+          { name: "Ludovic Dibiaggio", affiliation: "SKEMA" },
+          { name: "Reinhilde Veugelers", affiliation: "KU Leuven" },
+        ],
+        panellists: [
+          { name: "Hanan Osman-Ponchet", affiliation: "CEO, PKDERM" },
+          { name: "David Simplot", affiliation: "INRIA / 3IA Côte d’Azur / CA Sophia Antipolis" },
+          { name: "Chiara Criscuolo", affiliation: "OECD" },
+          { name: "Frédéric Feresin", affiliation: "AzurIA" },
+        ],
+      },
+      { time: "20:00", title: "Dinner on the beach", kind: "social" },
+    ],
   },
   {
+    id: "wednesday",
     date: "Wednesday, 9 September 2026",
-    detail: "Morning of keynote lectures and contributed sessions, closing remarks, and end of the summer school at noon.",
+    slots: [
+      {
+        time: "09:30–10:30",
+        title: "Paper Session IV",
+        chair: "Bruno Cassiman",
+        theme: "Biomedical innovation: IP, licensing & regulation",
+        kind: "papers",
+        items: [
+          {
+            title: "Licensing and Innovation Regimes in Pharmaceutical R&D",
+            speakers: [
+              { name: "Michele Liberatore", affiliation: "IMT School for Advanced Studies Lucca" },
+            ],
+          },
+          {
+            title: "Bad Knowledge Spillovers and the Diffusion of Innovation Failures",
+            speakers: [{ name: "Gianluca Murgia", affiliation: "University of Siena" }],
+          },
+          {
+            title:
+              "Regulatory Incentives and Strategic Innovation: Evidence from the FDA Breakthrough Therapy Designation",
+            speakers: [{ name: "Ha Chu Thi", affiliation: "Esade Business School" }],
+          },
+        ],
+      },
+      { time: "10:30–11:00", title: "Coffee", kind: "break" },
+      {
+        time: "11:00–12:30",
+        title: "Paper Session V",
+        chair: "Reinhilde Veugelers",
+        theme: "Science & innovation policy",
+        kind: "papers",
+        items: [
+          {
+            title: "Who Patents Public Research? New Evidence on the European Paradox",
+            speakers: [{ name: "Michael Rose", affiliation: "Max Planck Institute" }],
+          },
+          {
+            title: "China Nears Sovereignty in Technological Innovation",
+            speakers: [{ name: "Ziyu Chen", affiliation: "University of Hong Kong" }],
+          },
+          {
+            title:
+              "Scientific Research, Global Health, and Gender Gaps: A New Data Infrastructure",
+            speakers: [{ name: "Leo Schmallenbach", affiliation: "University of Mannheim" }],
+          },
+          {
+            title:
+              "To Make or To Buy? Scientific Capabilities and Innovation Strategy under Demand Pressure",
+            speakers: [{ name: "Rujuta Bhagwat", affiliation: "Bocconi University" }],
+          },
+        ],
+      },
+      {
+        time: "12:30–13:00",
+        title: "Closing remarks",
+        kind: "remarks",
+        speakers: [{ name: "Bart Van Looy" }],
+      },
+      { time: "13:00–14:00", title: "Lunch", kind: "break" },
+    ],
+  },
+];
+
+const posterSlams = [
+  {
+    id: "poster-slam-i",
+    title: "Poster Slam I",
+    day: "Monday 7 September 2026",
+    posters: [
+      {
+        title: "Not All Maps Are Equal: Heterogeneity in Science and Corporate R&D",
+        name: "Paul-Emmanuel Anckaert",
+        affiliation: "SKEMA Business School",
+      },
+      {
+        title: "A Novel Method to Identify Emerging Speciation Technologies",
+        name: "Max Denzinger",
+        affiliation: "University of Bremen",
+      },
+      {
+        title:
+          "What Citations Miss: An LLM-Extracted Biographical Signature of Recognised Breakthrough Inventors",
+        name: "Arash Hajikhani",
+        affiliation: "VTT Finland",
+      },
+      {
+        title:
+          "LLM-Driven Content-Based Knowledge Graphs: A New Perspective to Study a Scientific Field",
+        name: "Seorin Kim",
+        affiliation: "Vrije Universiteit Brussel",
+      },
+      {
+        title: "How Success Speaks: Clustered Linguistic Profiles in Grant Applications",
+        name: "Tetiana Lem",
+        affiliation: "Stockholm School of Economics",
+      },
+      {
+        title:
+          "Strategic Trial Design Under Finite Exclusivity: Evidence from Post-Approval Clinical Trials",
+        name: "Macarena León Candia",
+        affiliation: "University of Vienna",
+      },
+      {
+        title: "Measuring Novelty in Science Using LLMs",
+        name: "Cheng Li",
+        affiliation: "Max Planck Institute",
+      },
+      {
+        title: "Dispersion and Order in Technology Spaces Following AI-Enabled Shocks",
+        name: "Dylan McNally",
+        affiliation: "Tilburg University",
+      },
+      {
+        title: "The Strategic Intersection of Frugal Innovation and Patenting",
+        name: "Sebastian Stade",
+        affiliation: "University of Bremen",
+      },
+      {
+        title:
+          "Localized Knowledge Spillovers Revisited: A Replication with Semantic Distance Using LogicMill",
+        name: "Kaan Uctum",
+        affiliation: "Technical University of Munich",
+      },
+    ],
+  },
+  {
+    id: "poster-slam-ii",
+    title: "Poster Slam II",
+    day: "Tuesday 8 September 2026",
+    posters: [
+      {
+        title: "A Structural Analysis of LLM-Generated Research Methodologies",
+        name: "Francesca Carlon",
+        affiliation: "Vrije Universiteit Brussel",
+      },
+      {
+        title:
+          "Governing at Scale: Identifying Governance Technology in Sharing Platforms Through AI-Assisted Patent Analysis",
+        name: "Qi Ang Du",
+        affiliation: "University of Cambridge",
+      },
+      {
+        title:
+          "Building an Attribution-Provenance-Remuneration Ecosystem for AI: A DAO Architecture with Tokenized Licensing, AMM-Based Settlement, and Fair Value Distribution",
+        name: "Jan-Gero Alexander Hannemann",
+        affiliation: "University of Cambridge",
+      },
+      {
+        title:
+          "Quantifying Startup Novelty: Innovation Novelty and Transience in Early-Stage Startups",
+        name: "Reem Ismail",
+        affiliation: "Université Paris Dauphine",
+      },
+      {
+        title:
+          "From Playfulness to Performance: How Playful Prompting Influences the Creative Output of LLMs",
+        name: "Sevginur-Elif Kocabas",
+        affiliation: "University of Bremen",
+      },
+      {
+        title:
+          "Modeling Public Fear of AI-Driven Job Displacement in the United States Across a Decade",
+        name: "Austin Lee",
+        affiliation: "Texas Tech University",
+      },
+      {
+        title: "Topic-Level Misalignment in Corporate AI Talks and Action",
+        name: "Faiza Liaqat",
+        affiliation: "LUISS Guido Carli",
+      },
+      {
+        title: "Trade-off Between Hardware–Software Coupling and Exploration",
+        name: "Iris Poon",
+        affiliation: "SKEMA Business School",
+      },
+      {
+        title: "Innovation Signals and Clinical Translation in Personalized Medicine",
+        name: "Yi Shan",
+        affiliation: "IMT School for Advanced Studies Lucca",
+      },
+      {
+        title:
+          "Data Breaches and Their Impact on Firms’ Innovation Strategy: Evidence from U.S. Firms",
+        name: "Domenika Uskova",
+        affiliation: "Warwick Business School and Nova Business School",
+      },
+      {
+        title: "Anticipated Evaluation Standards and Innovation Search: An Agent-Based Model",
+        name: "Magnus van Haaren",
+        affiliation: "Erasmus University / RSM",
+      },
+    ],
   },
 ];
 
@@ -25,18 +414,21 @@ const keynotes = [
     bio: "Rex D. Adams Professor of Business Administration. His work uses patent and licensing data to study the economics of technology, markets for technology, and the commercialisation of knowledge. Recent research documents the decline of corporate science and its consequences for innovation.",
   },
   {
+    name: "Dashun Wang",
+    affiliation: "Kellogg School of Management, Northwestern University",
+    photo: "/images/speakers/wang.jpg",
+    talk: "Airplanes for the mind: AI agents and the science of science",
+    bio: "Director of the Center for Science of Science and Innovation. His research uses large-scale data on careers, citations, and team formation to uncover quantitative patterns in scientific breakthroughs and creative productivity. Co-author of The Science of Science (Cambridge, 2021).",
+  },
+  {
     name: "Joshua Krieger",
     affiliation: "Harvard Business School",
     photo: "/images/speakers/krieger.jpg",
     bio: "Studies the economics and management of innovation in the life sciences using detailed pipeline-level data on pharmaceutical and biotech R&D. His work covers novelty, learning from failure, and how firms allocate scarce R&D resources.",
   },
-  {
-    name: "Dashun Wang",
-    affiliation: "Kellogg School of Management, Northwestern University",
-    photo: "/images/speakers/wang.jpg",
-    bio: "Director of the Center for Science of Science and Innovation. His research uses large-scale data on careers, citations, and team formation to uncover quantitative patterns in scientific breakthroughs and creative productivity. Co-author of The Science of Science (Cambridge, 2021).",
-  },
 ];
+
+const speakerList = (people: { name: string; affiliation?: string }[]) => people;
 ---
 
 <BaseLayout title="Program">
@@ -44,39 +436,121 @@ const keynotes = [
     <div class="container-narrow prose">
       <p class="eyebrow eyebrow-lg page-title">Program</p>
       <p class="lede">
-        The shape of the school and its main building blocks are set. We will
-        keep updating this page as more of the program comes together.
+        Three days of keynotes, contributed papers, poster slams, industry sessions,
+        and a panel on AI and innovation in Europe — all in a single track, so
+        everyone sees everything.
+      </p>
+
+      <p class="actions">
+        <a href={withBase("/docs/STI-2026-Program.pdf")} class="btn btn-primary" download>
+          Download the program (PDF)
+        </a>
+        <a href={withBase("/venue")} class="btn btn-outline">Venue &amp; travel</a>
       </p>
 
       <div class="callout">
-        <p style="margin-top:0;"><strong>Detailed schedule: to be announced.</strong></p>
-        <p>
-          We'll publish the full timetable shortly after
-          <strong>{site.deadlines.notification.label}</strong>, the notification
-          deadline for accepted papers. Submit your work via the
-          <a href={withBase("/call-for-papers")}>call for papers</a> by
-          {site.deadlines.submission.label}.
+        <p style="margin-top:0;"><strong>Preliminary program — subject to change.</strong></p>
+        <p style="margin-bottom:0;">
+          Presenters in paper sessions have 15 minutes each; the last part of every
+          session is reserved for questions and discussion. Each poster presenter has
+          4 minutes to pitch their work during the Poster Slam, followed by a coffee
+          break dedicated to the posters. The final version of the program will be
+          available a few days before the event.
         </p>
-        <p style="margin-bottom:0;"><em>Everything below is subject to change.</em></p>
       </div>
 
-      <h2>Overview</h2>
-      <ul class="shape">
-        {
-          shape.map((d) => (
-            <li>
-              <div class="shape-date">{d.date}</div>
-              <div class="shape-detail">{d.detail}</div>
-            </li>
-          ))
-        }
-      </ul>
+      <nav class="daynav" aria-label="Jump to a day">
+        {days.map((d) => <a href={`#${d.id}`}>{d.date.split(",")[0]}</a>)}
+        <a href="#posters">Posters</a>
+      </nav>
 
-      <h2>Keynote lectures</h2>
-      <p>
-        Three confirmed keynote lectures from leading scholars in the economics and
-        science of innovation.
-      </p>
+      {
+        days.map((day) => (
+          <section class="day" id={day.id}>
+            <h2>{day.date}</h2>
+            <ol class="slots">
+              {day.slots.map((slot) => (
+                <li class={`slot slot-${slot.kind}`}>
+                  <div class="slot-time">{slot.time}</div>
+                  <div class="slot-body">
+                    <div class="slot-head">
+                      <h3>{slot.title}</h3>
+                      {slot.chair && <span class="chair">Chair: {slot.chair}</span>}
+                    </div>
+
+                    {slot.theme && <p class="theme">{slot.theme}</p>}
+                    {slot.note && <p class="note">{slot.note}</p>}
+                    {slot.link && (
+                      <p class="note">
+                        <a href={slot.link.href}>{slot.link.label} ↓</a>
+                      </p>
+                    )}
+
+                    {slot.speakers && (
+                      <p class="people">
+                        {speakerList(slot.speakers).map((p, i) => (
+                          <>
+                            {i > 0 && <span>, </span>}
+                            <strong>{p.name}</strong>
+                            {p.affiliation && <span class="aff"> ({p.affiliation})</span>}
+                          </>
+                        ))}
+                      </p>
+                    )}
+
+                    {slot.items && (
+                      <ul class="talks">
+                        {slot.items.map((item) => (
+                          <li>
+                            {item.title && <p class="talk-title">{item.title}</p>}
+                            <p class="people">
+                              {speakerList(item.speakers).map((p, i) => (
+                                <>
+                                  {i > 0 && <span>, </span>}
+                                  <strong>{p.name}</strong>
+                                  {p.affiliation && <span class="aff"> ({p.affiliation})</span>}
+                                </>
+                              ))}
+                              {item.tag && <span class="tag">{item.tag}</span>}
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                    {slot.hosts && (
+                      <p class="people">
+                        <span class="role">Hosts:</span>{" "}
+                        {speakerList(slot.hosts).map((p, i) => (
+                          <>
+                            {i > 0 && <span> &amp; </span>}
+                            <strong>{p.name}</strong>
+                            <span class="aff"> ({p.affiliation})</span>
+                          </>
+                        ))}
+                      </p>
+                    )}
+                    {slot.panellists && (
+                      <ul class="talks">
+                        {slot.panellists.map((p) => (
+                          <li>
+                            <p class="people">
+                              <strong>{p.name}</strong>
+                              <span class="aff"> ({p.affiliation})</span>
+                            </p>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ))
+      }
+
+      <h2>Keynote speakers</h2>
       <div class="keynote-grid">
         {
           keynotes.map((k) => (
@@ -95,49 +569,42 @@ const keynotes = [
               </div>
               <h3>{k.name}</h3>
               <p class="affiliation">{k.affiliation}</p>
+              {k.talk && <p class="talk">{k.talk}</p>}
               <p class="bio">{k.bio}</p>
             </article>
           ))
         }
       </div>
 
-      <h2>Practitioner sessions</h2>
+      <h2 id="posters">Posters</h2>
       <p>
-        The first afternoon features practitioner sessions with guest speakers from
-        <strong> Google</strong> and the <strong>European Patent Office</strong>.
-        They will introduce new initiatives, tools, and data resources that matter
-        for academic research on science and innovation.
+        Poster presenters pitch their work in the Poster Slam and are then at their
+        poster during the following coffee break.
       </p>
-      <p class="soon"><em>More information on speakers and topics coming soon.</em></p>
 
-      <h2>Panel discussion: AI as leverage for science and innovation in Europe</h2>
-      <p>
-        An interactive panel where AI entrepreneurs and policymakers debate whether — and
-        how — Europe can harness AI to advance science and innovation. Moderated by
-        Ludovic Dibiaggio (SKEMA) and Reinhilde Veugelers (KU Leuven), with regional
-        and EU policymakers and AI entrepreneurs.
-      </p>
-      <p class="soon"><em>More information on panellists coming soon.</em></p>
+      {
+        posterSlams.map((slam) => (
+          <section class="slam" id={slam.id}>
+            <h3>
+              {slam.title} <span class="slam-day">· {slam.day}</span>
+            </h3>
+            <ul class="poster-list">
+              {slam.posters.map((p) => (
+                <li>
+                  <p class="talk-title">{p.title}</p>
+                  <p class="people">
+                    <strong>{p.name}</strong>
+                    <span class="aff"> ({p.affiliation})</span>
+                  </p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))
+      }
 
-      <h2>Contributed sessions</h2>
-      <p>
-        Contributed work from participants is presented in two formats. There are
-        <strong>no parallel tracks</strong> — everyone sees everything.
-      </p>
-      <ul class="block-list">
-        <li>
-          <strong>Pitch presentations (5 min)</strong>
-          <span>followed by a poster session for in-depth discussion.</span>
-        </li>
-        <li>
-          <strong>Full presentations (15 min)</strong>
-          <span>followed by plenary discussion.</span>
-        </li>
-      </ul>
-      <p>
-        The selection of contributions runs through the
-        <a href={withBase("/call-for-papers")}>call for papers</a>. Participants are
-        also welcome to propose full paper sessions — get in touch at
+      <p class="footnote">
+        Questions about the program? Get in touch at
         <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
       </p>
     </div>
@@ -150,30 +617,186 @@ const keynotes = [
     letter-spacing: 0.04em;
     margin-bottom: 1.25rem;
   }
-  .shape {
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  /* --- Day navigation --- */
+  .daynav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 1.5rem 0 0.5rem;
+  }
+  .daynav a {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 0.35rem 0.8rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: var(--color-surface);
+    color: var(--color-primary);
+  }
+  .daynav a:hover {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+
+  /* --- Schedule --- */
+  .day {
+    scroll-margin-top: 5rem;
+  }
+  .slots {
     list-style: none;
-    margin: 1.5rem 0;
+    margin: 1.25rem 0 2.5rem;
     padding: 0;
     display: grid;
-    gap: 1rem;
+    gap: 0.6rem;
   }
-  .shape li {
-    padding: 1rem 1.25rem;
+  .slot {
+    display: grid;
+    grid-template-columns: 7.5rem 1fr;
+    gap: 0 1.25rem;
+    padding: 0.9rem 1.1rem;
     background: var(--color-surface);
     border: 1px solid var(--color-line);
-    border-left: 4px solid var(--color-accent);
+    border-left: 4px solid var(--color-line);
     border-radius: var(--radius-sm);
   }
-  .shape-date {
-    font-family: var(--font-serif);
-    font-size: 1.1rem;
-    color: var(--color-primary-700);
-    margin-bottom: 0.2rem;
+  .slot-keynote {
+    border-left-color: var(--color-primary);
   }
-  .shape-detail {
+  .slot-papers,
+  .slot-posters {
+    border-left-color: var(--color-accent);
+  }
+  .slot-industry,
+  .slot-panel {
+    border-left-color: var(--color-warm);
+  }
+  .slot-social {
+    border-left-color: var(--color-warm);
+  }
+  .slot-break,
+  .slot-remarks {
+    background: transparent;
+    padding-block: 0.6rem;
+  }
+  .slot-time {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: 0.9rem;
     color: var(--color-muted);
-    font-size: 0.95rem;
+    padding-top: 0.15rem;
   }
+  .slot-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+  }
+  .slot-body h3 {
+    margin: 0;
+    font-size: 1.05rem;
+    color: var(--color-primary-700);
+  }
+  .slot-break .slot-body h3,
+  .slot-remarks .slot-body h3 {
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-muted);
+  }
+  .chair {
+    font-size: 0.82rem;
+    color: var(--color-muted);
+    font-style: italic;
+  }
+  .theme {
+    margin: 0.35rem 0 0;
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--color-accent);
+  }
+  .note {
+    margin: 0.4rem 0 0;
+    font-size: 0.88rem;
+    color: var(--color-muted);
+  }
+  .talks {
+    list-style: none;
+    margin: 0.65rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+  }
+  .talk-title {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+  .people {
+    margin: 0.1rem 0 0;
+    font-size: 0.9rem;
+  }
+  .people .aff {
+    color: var(--color-muted);
+  }
+  .people .role {
+    color: var(--color-muted);
+    font-style: italic;
+  }
+  .tag {
+    display: inline-block;
+    margin-left: 0.5rem;
+    padding: 0.05rem 0.5rem;
+    border-radius: 999px;
+    background: var(--color-accent-100);
+    color: var(--color-primary-700);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* --- Posters --- */
+  .slam {
+    scroll-margin-top: 5rem;
+    margin-bottom: 2rem;
+  }
+  .slam h3 {
+    color: var(--color-primary-700);
+    margin-bottom: 0.5rem;
+  }
+  .slam-day {
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 400;
+    color: var(--color-muted);
+  }
+  .poster-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.75rem;
+  }
+  .poster-list li {
+    padding: 0.75rem 1rem;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-sm);
+  }
+
+  /* --- Keynote cards --- */
   .keynote-grid {
     display: grid;
     gap: 1.25rem;
@@ -221,32 +844,29 @@ const keynotes = [
     font-size: 0.9rem;
     margin: 0.1rem 0 0.65rem;
   }
+  .keynote-card .talk {
+    font-family: var(--font-serif);
+    font-size: 0.98rem;
+    line-height: 1.35;
+    margin: 0 0 0.65rem;
+  }
   .keynote-card .bio {
     font-size: 0.95rem;
     margin: 0;
   }
-  .block-list {
-    list-style: none;
-    margin: 1rem 0 1.5rem;
-    padding: 0;
-    display: grid;
-    gap: 0.5rem;
-  }
-  .block-list li {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 0.75rem;
-    padding: 0.6rem 0.9rem;
-    background: var(--color-surface);
-    border: 1px solid var(--color-line);
-    border-radius: var(--radius-sm);
-  }
-  .block-list span {
-    color: var(--color-muted);
-  }
-  .soon {
+
+  .footnote {
     font-size: 0.9rem;
     color: var(--color-muted);
-    margin-top: -0.5rem;
+  }
+
+  @media (max-width: 560px) {
+    .slot {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+    .slot-time {
+      padding-top: 0;
+    }
   }
 </style>
