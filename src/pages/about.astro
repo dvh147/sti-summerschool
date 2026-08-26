@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { withBase } from "../site";
+import { site, withBase } from "../site";
 ---
 
 <BaseLayout title="About">
@@ -78,7 +78,11 @@ import { withBase } from "../site";
       <p>
         You are welcome to attend, whether or not you present. See the
         <a href={withBase("/call-for-papers")}>Call for Papers</a> for submission
-        details, or head straight to <a href={withBase("/registration")}>registration</a>.
+        details{site.registrationOpen ? (
+          <>, or head straight to <a href={withBase("/registration")}>registration</a></>
+        ) : (
+          <>, or the <a href={withBase("/program")}>program</a> for what is on</>
+        )}.
       </p>
 
       <h2>Past editions</h2>

@@ -13,6 +13,12 @@ export const site = {
   venueAddress: "28 Avenue Valrose, 06100 Nice, France",
   fee: "€145",
   contactEmail: "sti@kuleuven.be",
+  // Single switch for the registration state. When false, the form, the
+  // payment block, and every "Register" call-to-action across the site are
+  // replaced by a "registration is closed" message pointing at contactEmail.
+  // The /registration page itself stays reachable so existing links and
+  // links in already-sent emails do not 404.
+  registrationOpen: false,
   deadlines: {
     submission: { iso: "2026-05-08", label: "8 May 2026" },
     notification: { iso: "2026-05-22", label: "22 May 2026" },

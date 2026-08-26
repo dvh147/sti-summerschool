@@ -86,7 +86,9 @@ import { site, withBase } from "../site";
       </ul>
 
       <p>
-        <a href={withBase("/registration")} class="btn btn-primary">Register</a>
+        {site.registrationOpen && (
+          <a href={withBase("/registration")} class="btn btn-primary">Register</a>
+        )}
         <a href={withBase("/venue")} class="btn btn-outline">Venue &amp; travel</a>
       </p>
     </div>

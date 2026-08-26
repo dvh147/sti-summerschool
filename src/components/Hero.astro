@@ -17,8 +17,17 @@ import { withBase, site } from "../site";
       on science and innovation.
     </p>
     <div class="hero-cta">
-      <a href={withBase("/registration")} class="btn btn-primary">Register</a>
-      <a href={withBase("/call-for-papers")} class="btn btn-outline">Call for Papers</a>
+      {site.registrationOpen ? (
+        <>
+          <a href={withBase("/registration")} class="btn btn-primary">Register</a>
+          <a href={withBase("/call-for-papers")} class="btn btn-outline">Call for Papers</a>
+        </>
+      ) : (
+        <>
+          <a href={withBase("/program")} class="btn btn-primary">See the program</a>
+          <a href={withBase("/venue")} class="btn btn-outline">Venue &amp; travel</a>
+        </>
+      )}
     </div>
   </div>
 </section>
