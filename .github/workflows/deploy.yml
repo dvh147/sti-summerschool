@@ -41,6 +41,11 @@ jobs:
           BASE_PATH: ${{ vars.BASE_PATH }}
           PUBLIC_REGISTRATION_API: ${{ vars.PUBLIC_REGISTRATION_API || 'https://your-worker.example.workers.dev' }}
           PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY || '' }}
+          # Secret slug for the unlisted invite page at /join/<slug>. When
+          # empty, no such page is built at all — there is no default on
+          # purpose. Rotate the link by changing the variable and re-running
+          # this workflow; the old URL then 404s.
+          PUBLIC_INVITE_SLUG: ${{ vars.PUBLIC_INVITE_SLUG || '' }}
         run: npm run build
 
       - uses: actions/upload-pages-artifact@v3
