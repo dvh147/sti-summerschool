@@ -1,0 +1,77 @@
+---
+// Bank-transfer details. Shared by /registration (shown whether or not
+// registration is open — people who registered but have not paid still need
+// these) and the unlisted invite page.
+import { site } from "../site";
+
+interface Props {
+  /** True when the reader is about to register, so the copy can point at the
+      confirmation email they are about to receive. */
+  beforeRegistering?: boolean;
+}
+
+const { beforeRegistering = false } = Astro.props;
+---
+
+<section class="section">
+  <div class="container-narrow">
+    <h2>Payment</h2>
+    <div class="callout">
+      <p style="margin-top:0;">
+        The participant fee of <strong>{site.fee}</strong> is collected by SKEMA
+        Business School by <strong>SEPA bank transfer</strong>.
+        {beforeRegistering
+          ? " You will also receive these details in your confirmation email after registering."
+          : " If you have registered but not yet paid, please use the details below."}
+      </p>
+      <table class="bank-table">
+        <tbody>
+          <tr><th>Beneficiary</th><td>SKEMA Business School</td></tr>
+          <tr><th>Bank</th><td>Société Générale</td></tr>
+          <tr><th>IBAN</th><td><code>FR76 3000 3036 0500 1500 0270 217</code></td></tr>
+          <tr><th>BIC / SWIFT</th><td><code>SOGEFRPPXXX</code></td></tr>
+          <tr><th>Reference</th><td><code>Conférence ST&amp;I septembre 2026 – &lt;YOUR LAST NAME&gt;</code></td></tr>
+        </tbody>
+      </table>
+      <p style="margin-bottom:0;">
+        <strong>Please use the reference above exactly</strong>, including your last
+        name, so we can match your payment to your registration.
+      </p>
+    </div>
+
+    <p class="help">
+      Need a <strong>confirmation of payment</strong> for your records? Just email us
+      and we will send one. Please note that fees are <strong>non-refundable</strong>
+      in case of cancellation.
+    </p>
+
+    <p>
+      For questions about registration or payment, email
+      <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
+    </p>
+  </div>
+</section>
+
+<style>
+  code {
+    background: rgba(10, 74, 122, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+  .bank-table {
+    border-collapse: collapse;
+    margin: 1rem 0;
+  }
+  .bank-table th,
+  .bank-table td {
+    text-align: left;
+    vertical-align: top;
+    padding: 0.3rem 1rem 0.3rem 0;
+  }
+  .bank-table th {
+    color: var(--color-muted);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+</style>

@@ -1,0 +1,369 @@
+---
+// The registration form, shared by the public /registration page (when
+// registration is open) and the unlisted invite page at /join/<slug>.
+// Posts to the Cloudflare Worker, so submissions land in D1 and show up in
+// the /admin dashboard regardless of which page they came from.
+import { site, withBase } from "../site";
+
+interface Props {
+  /** Marks the submission so we can tell invited sign-ups apart in admin. */
+  source?: string;
+}
+
+const { source } = Astro.props;
+
+const apiBase = import.meta.env.PUBLIC_REGISTRATION_API || site.registrationApi;
+const apiUrl = `${apiBase.replace(/\/$/, "")}/api/register`;
+const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || site.turnstileSiteKey;
+const isConnected = !apiBase.includes("your-worker.example") && turnstileSiteKey.length > 0;
+// Appended to the free-text notes field so invited sign-ups are identifiable
+// in the admin dashboard without a schema change on the Worker.
+const sourceNote = source ? ` [${source}]` : "";
+---
+
+<section class="section form-section">
+  <div class="container-narrow">
+    <h2>Registration form</h2>
+    <p class="help">
+      Fields marked <span class="required">*</span> are required. Your details will only
+      be used to process your registration — see our <a href={withBase("/privacy")}>privacy notice</a>.
+    </p>
+
+    <div id="reg-success" class="callout success" hidden>
+      <h3 style="margin-top:0;">Thank you — your registration has been received.</h3>
+      <p>
+        A confirmation email has just been sent to your address from
+        <strong>summerschool@stisummerschool.org</strong>, including payment
+        instructions.
+      </p>
+      <p>
+        <strong>Please check your spam / junk folder</strong> if it does not
+        arrive within a few minutes. To make sure you receive follow-up
+        messages (payment confirmation, practical information, programme),
+        please add <strong>summerschool@stisummerschool.org</strong> to your
+        contacts or your safe-senders list.
+      </p>
+      <p style="margin-bottom:0;">
+        For questions, email <a href={`mailto:${site.contactEmail}`}>{site.contactEmail}</a>.
+      </p>
+    </div>
+
+    <form id="reg-form" class="reg-form" novalidate hidden={false}>
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="gotcha" />
+
+      <h3 class="form-section-title">About you</h3>
+      <div class="form-grid">
+        <div>
+          <label for="title">Title</label>
+          <select id="title" name="title">
+            <option value="">—</option>
+            <option value="Mr">Mr</option>
+            <option value="Ms">Ms</option>
+            <option value="Dr">Dr</option>
+            <option value="Prof">Prof</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label for="participantType">I am attending as <span class="required">*</span></label>
+          <select id="participantType" name="participantType" required>
+            <option value="participant" selected>Participant</option>
+            <option value="keynote">Keynote speaker</option>
+            <option value="organizer">Organizer</option>
+            <option value="volunteer">Volunteer</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="firstName">First name <span class="required">*</span></label>
+          <input id="firstName" name="firstName" type="text" autocomplete="given-name" required />
+        </div>
+        <div>
+          <label for="lastName">Last name <span class="required">*</span></label>
+          <input id="lastName" name="lastName" type="text" autocomplete="family-name" required />
+        </div>
+
+        <div class="full">
+          <label for="email">Email <span class="required">*</span></label>
+          <input id="email" name="email" type="email" autocomplete="email" required />
+        </div>
+
+        <div>
+          <label for="phone">Phone (mobile)</label>
+          <input id="phone" name="phone" type="tel" autocomplete="tel" placeholder="for last-minute on-site contact" />
+        </div>
+        <div>
+          <label for="affiliation">Institution / affiliation <span class="required">*</span></label>
+          <input id="affiliation" name="affiliation" type="text" autocomplete="organization" required />
+        </div>
+
+        <div class="full">
+          <label for="position">Position / role</label>
+          <input id="position" name="position" type="text" placeholder="e.g. PhD student, Assistant Professor" />
+        </div>
+      </div>
+
+      <h3 class="form-section-title">Address</h3>
+      <p class="help">Used for the participant list and our records.</p>
+      <div class="form-grid">
+        <div style="grid-column: span 2;">
+          <label for="street">Street <span class="required">*</span></label>
+          <input id="street" name="street" type="text" autocomplete="address-line1" required />
+        </div>
+        <div>
+          <label for="streetNumber">Number <span class="required">*</span></label>
+          <input id="streetNumber" name="streetNumber" type="text" required />
+        </div>
+        <div>
+          <label for="box">Box / unit</label>
+          <input id="box" name="box" type="text" />
+        </div>
+
+        <div>
+          <label for="postalCode">Postal code <span class="required">*</span></label>
+          <input id="postalCode" name="postalCode" type="text" autocomplete="postal-code" required />
+        </div>
+        <div>
+          <label for="city">City <span class="required">*</span></label>
+          <input id="city" name="city" type="text" autocomplete="address-level2" required />
+        </div>
+
+        <div>
+          <label for="country">Country</label>
+          <input id="country" name="country" type="text" autocomplete="country-name" />
+        </div>
+      </div>
+
+      <h3 class="form-section-title">Submission</h3>
+      <div class="form-grid">
+        <div class="full">
+          <label>Are you submitting a paper? <span class="required">*</span></label>
+          <div class="radio-row">
+            <label class="checkbox"><input type="radio" name="presenting" value="yes" required /> Yes, I plan to present</label>
+            <label class="checkbox"><input type="radio" name="presenting" value="no" required /> No, attending only</label>
+          </div>
+        </div>
+
+        <div class="full">
+          <label for="paperTitle">Paper / abstract title (if presenting)</label>
+          <input id="paperTitle" name="paperTitle" type="text" />
+        </div>
+      </div>
+
+      <h3 class="form-section-title">Practical</h3>
+      <div class="form-grid">
+        <div class="full">
+          <label>Meals (please untick what you don't need so we can plan catering)</label>
+          <div class="check-grid">
+            <label class="checkbox"><input type="checkbox" name="mealMonLunch"  checked /> Lunch — Monday 7 September</label>
+            <label class="checkbox"><input type="checkbox" name="mealTueLunch"  checked /> Lunch — Tuesday 8 September</label>
+            <label class="checkbox"><input type="checkbox" name="mealWedLunch"  checked /> Lunch — Wednesday 9 September</label>
+            <label class="checkbox"><input type="checkbox" name="mealTueDinner" checked /> Beach dinner — Tuesday 8 September evening</label>
+          </div>
+        </div>
+
+        <div class="full">
+          <label for="dietary">Dietary requirements</label>
+          <input id="dietary" name="dietary" type="text" placeholder="e.g. vegetarian, gluten-free, allergies" />
+        </div>
+
+        <div class="full">
+          <label for="accessibility">Accessibility needs</label>
+          <input id="accessibility" name="accessibility" type="text" placeholder="Tell us how we can make the event accessible for you" />
+        </div>
+
+        <div class="full">
+          <label for="notes">Anything else we should know?</label>
+          <textarea id="notes" name="notes"></textarea>
+        </div>
+      </div>
+
+      <h3 class="form-section-title">Consents</h3>
+      <div class="form-grid">
+        <div class="full checkbox">
+          <input id="consent" name="consent" type="checkbox" required />
+          <label for="consent">
+            I consent to the organizers processing the information above for the
+            purpose of registering me for the STI Summer School 2026, as described
+            in the <a href={withBase("/privacy")}>privacy notice</a>. <span class="required">*</span>
+          </label>
+        </div>
+        <div class="full checkbox">
+          <input id="photoConsent" name="photoConsent" type="checkbox" />
+          <label for="photoConsent">
+            I am aware that photographs and short videos may be taken during the
+            summer school for documentation and communication purposes, and I
+            consent to my image being used in that context.
+          </label>
+        </div>
+        <div class="full checkbox">
+          <input id="attendeeListConsent" name="attendeeListConsent" type="checkbox" />
+          <label for="attendeeListConsent">
+            You may include my full name, affiliation and email address on the
+            participant list distributed to attendees during the summer school.
+          </label>
+        </div>
+      </div>
+
+      {turnstileSiteKey && (
+        <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-action="register"></div>
+      )}
+
+      <p id="reg-error" class="warn" hidden></p>
+
+      <p class="submit-row">
+        <button type="submit" class="btn btn-primary" id="reg-submit">Submit registration</button>
+      </p>
+
+      {!isConnected && (
+        <p class="help warn">
+          <strong>Form not yet connected.</strong> Set <code>PUBLIC_REGISTRATION_API</code>
+          and <code>PUBLIC_TURNSTILE_SITE_KEY</code> as repo variables before going live.
+        </p>
+      )}
+    </form>
+  </div>
+</section>
+
+{turnstileSiteKey && (
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+)}
+
+<script define:vars={{ apiUrl, isConnected, sourceNote }}>
+  const form = document.getElementById('reg-form');
+  const successEl = document.getElementById('reg-success');
+  const errEl = document.getElementById('reg-error');
+  const btn = document.getElementById('reg-submit');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!isConnected) {
+        showError('The registration system is not yet connected. Please email the organizers.');
+        return;
+      }
+      errEl.hidden = true;
+      btn.disabled = true;
+      btn.textContent = 'Submitting…';
+
+      const fd = new FormData(form);
+      const presenting = fd.get('presenting');
+      if (!presenting) {
+        showError('Please indicate whether you are submitting a paper.');
+        btn.disabled = false; btn.textContent = 'Submit registration';
+        return;
+      }
+
+      const payload = {
+        title:          str(fd.get('title')),
+        firstName:      str(fd.get('firstName')),
+        lastName:       str(fd.get('lastName')),
+        email:          str(fd.get('email')),
+        phone:          str(fd.get('phone')),
+        affiliation:    str(fd.get('affiliation')),
+        position:       str(fd.get('position')),
+        participantType: str(fd.get('participantType')),
+        street:         str(fd.get('street')),
+        streetNumber:   str(fd.get('streetNumber')),
+        box:            str(fd.get('box')),
+        postalCode:     str(fd.get('postalCode')),
+        city:           str(fd.get('city')),
+        country:        str(fd.get('country')),
+        presenting:     str(presenting),
+        paperTitle:     str(fd.get('paperTitle')),
+        dietary:        str(fd.get('dietary')),
+        accessibility:  str(fd.get('accessibility')),
+        notes:          str(fd.get('notes')) + sourceNote,
+        mealMonLunch:   fd.get('mealMonLunch')  === 'on',
+        mealTueLunch:   fd.get('mealTueLunch')  === 'on',
+        mealWedLunch:   fd.get('mealWedLunch')  === 'on',
+        mealTueDinner:  fd.get('mealTueDinner') === 'on',
+        consent:             fd.get('consent') === 'on',
+        photoConsent:        fd.get('photoConsent') === 'on',
+        attendeeListConsent: fd.get('attendeeListConsent') === 'on',
+        _gotcha:        str(fd.get('_gotcha')),
+        'cf-turnstile-response': str(fd.get('cf-turnstile-response')),
+      };
+
+      try {
+        const res = await fetch(apiUrl, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        const body = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(body.error || 'Submission failed.');
+        form.hidden = true;
+        successEl.hidden = false;
+        successEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } catch (err) {
+        showError(err.message);
+        btn.disabled = false;
+        btn.textContent = 'Submit registration';
+        if (window.turnstile) window.turnstile.reset();
+      }
+    });
+  }
+
+  function str(v) { return v == null ? '' : String(v); }
+  function showError(m) { errEl.textContent = m; errEl.hidden = false; }
+</script>
+
+<style>
+  .form-section {
+    padding-top: 0;
+  }
+  .reg-form {
+    margin-top: 1.25rem;
+  }
+  .form-section-title {
+    margin: 1.75rem 0 0.5rem;
+    font-size: 1.1rem;
+    color: var(--color-primary-700);
+    border-top: 1px solid var(--color-line);
+    padding-top: 1.25rem;
+  }
+  .reg-form > .form-section-title:first-of-type {
+    border-top: 0;
+    padding-top: 0;
+    margin-top: 0;
+  }
+  .check-grid {
+    display: grid;
+    gap: 0.4rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    margin-top: 0.35rem;
+  }
+  .radio-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .submit-row {
+    margin-top: 1.5rem;
+  }
+  .gotcha {
+    display: none !important;
+  }
+  .warn {
+    background: #fff6e5;
+    border: 1px solid #f3d79a;
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--radius-sm);
+    color: #7a5200;
+  }
+  .success {
+    background: #e7f6ec;
+    border-color: #a8d4b3;
+    color: #1f4c2c;
+  }
+  .cf-turnstile {
+    margin: 1.25rem 0 0;
+  }
+  code {
+    background: rgba(10, 74, 122, 0.08);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+</style>

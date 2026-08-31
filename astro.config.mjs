@@ -12,5 +12,7 @@ export default defineConfig({
   site: SITE_URL,
   base: BASE_PATH,
   trailingSlash: "ignore",
-  integrations: [mdx(), sitemap()],
+  // The invite page under /join/ is deliberately unlisted — keep it out of
+  // the sitemap so it is not advertised to crawlers.
+  integrations: [mdx(), sitemap({ filter: (page) => !page.includes("/join/") })],
 });

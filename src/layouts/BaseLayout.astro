@@ -7,12 +7,15 @@ interface Props {
   title: string;
   description?: string;
   ogImage?: string;
+  /** Keep the page out of search engines (used by the unlisted invite page). */
+  noindex?: boolean;
 }
 
 const {
   title,
   description = "11th Summer School on Data and Algorithms for Science, Technology & Innovation Studies. 7–9 September 2026, Valrose Castle, Nice.",
   ogImage,
+  noindex = false,
 } = Astro.props;
 
 const fullTitle = title === "Home" ? "STI Summer School 2026 · Nice" : `${title} · STI Summer School 2026`;
@@ -29,7 +32,8 @@ const ogImageUrl = ogImage
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {!noindex && <link rel="canonical" href={canonical} />}
     <link rel="icon" href={`${import.meta.env.BASE_URL}favicon.svg`} type="image/svg+xml" />
 
     <meta property="og:type" content="website" />
